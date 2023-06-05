@@ -1,0 +1,12 @@
+Package: MBScontrol
+Title: MBScontrol project
+Version: 0.0.0.9000
+Authors@R: 
+    person("Thomas", "Quettier", , "Thomas.quettier@unipd.it", role = "aut",
+           comment = c(ORCID = "0000-0003-4804-7652"))
+Description: Github R project for CARIPARO Moebius GEW behavioral.
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.0

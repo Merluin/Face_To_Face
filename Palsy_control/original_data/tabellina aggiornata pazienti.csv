@@ -1,0 +1,37 @@
+﻿Pt.code;Pt.id;Pt.group;Pt.match;Pt.gender;Pt.age;Pt.study;Plsy.locus;Plsy.onset;Plsy.onset.year;Plsy.etiology;Plsy.etiology.notes;Surg.date;Surg.date.year;Surg.inter;Trt.physio;Trt.botulino;Asmt.sunnybrook ;Asmt.madrs.tot;Asmt.madrs.depression;Asmt.madrs.1;Asmt.madrs.2;Asmt.madrs.3;Asmt.madrs.4;Asmt.madrs.5;Asmt.madrs.6;Asmt.madrs.7;Asmt.madrs.8;Asmt.madrs.9;Asmt.madrs.10
+6u7m17ov;1;palsy;26;female;39;14;;;;;;0;0;0;1;1;89;22;moderate;1;1;3;3;0;3;4;3;4;0
+008lscsd;2;palsy;28;female;43;14;left;2018;2018;iatrogena;neurinoma VIII;0;0;0;1;1;39;18;mild ;1;3;2;4;0;2;2;3;1;0
+0upwovk3;3;palsy;19;female;50;13;left;ott-12;2012;iatrogena;neurinoma VIII;;;cantopessi+peso;1;0;50;8;mild ;2;2;0;0;0;1;0;1;2;0
+3fr6t6n4;4;palsy;23;female;37;19;right;2019;2019;angioma cavernoso;sede pontina;2019;2019;tripla innervazione+cantopessi;1;0;44;14;mild ;1;4;3;3;0;0;0;1;2;0
+3gtxgkqd;5;palsy;25;female;59;19;right;24/08/20;2020;iatrogena;neurinoma ottavo;13/03/21;2021;V-XII;1;0;56;9;mild ;1;1;0;0;2;2;2;1;0;0
+4rv15at0;6;palsy;31;female;62;17;left;01/03/17;2017;iatrogena;meningioma;0;0;0;1;0;41;5;no ;0;0;0;0;0;1;4;0;0;0
+7su88l3j;7;palsy;33;female;61;17;left;feb-22;2022;ramsay hunt;;0;0;0;1;0;87;25;moderate;1;5;0;5;1;0;4;4;5;0
+8ij7agah;8;palsy;34;female;41;16;left;21/08/20;2020;bell;;0;0;0;1;0;65;4;no ;0;0;0;0;0;0;0;0;0;0
+gb2mpcsm;9;palsy;21;female;56;13;right;2010;2010;angioma cavernoso;emorragia cerebrale bulbo pontina;2015;2015;sosp fascia lata;1;0;56;0;no ;0;0;0;0;0;0;0;0;0;0
+hx2lxp5a;10;palsy;27;female;29;18;right;2018;2018;iatrogena;neurinoma;2019-2020;2020;tripla innervazione;1;1;44;11;mild ;0;2;2;1;0;1;2;1;2;0
+i56nahhe;11;palsy;30;male;45;13;left;2017;2017;mav;rocca petrosa;;;V-VII;0;1;32;8;no;0;1;3;0;0;1;3;0;0;0
+pk4n4wpc;12;palsy;20;female;52;13;left;20/09/21;2021;iatrogena;neurinoma VIII;0;0;0;1;0;90;0;no;0;2;2;0;0;0;0;0;0;0
+u7ukhlts;13;palsy;24;male;38;13;left;2020;2020;iatrogena;neurinoma VIII;0;0;0;1;0;80;9;mild;0;2;1;0;0;0;2;2;2;0
+z3txa2mk;14;palsy;36;female;48;13;right;16/07/14;2014;zoster;;2020;2020;crossface;1;1;43;13;mild;0;2;3;3;0;0;5;0;0;0
+2eu5g068;15;palsy;32;female;52;13;right;11/08/20;2020;belll;;30/08/21;2021;V-VII;1;1;45;25;moderate;2;4;0;2;2;3;4;3;5;0
+62cwsg59;16;palsy;29;male;19;13;right;2009;2009;iatrogena;Iatrogena (medulloblastoma cerebellare);2014;2014;crossface+gracile;1;1;36;2;no ;0;1;1;0;0;0;0;0;0;0
+tff0qula;17;palsy;35;female;67;11;right;25/10/20;2020;bell;;0;0;0;1;0;78;2;no ;0;0;2;0;0;0;0;0;0;0
+sbba1umm;18;palsy;22;female;19;13;left;apr-22;2022;mieloradicolonevrite;HBV;0;0;0;1;0;74;9;mild ;2;1;1;0;0;0;3;0;2;0
+e2wtlj1f;19;control;3;female;51;13;;;;;;;;;;;;2;no ;0;0;1;0;0;0;0;0;1;0
+1hcyax1z;20;control;12;female;53;13;;;;;;;;;;;;0;no ;0;0;0;0;0;0;0;0;0;0
+48m9zzlz;21;control;9;female;56;13;;;;;;;;;;;;5;no ;0;0;2;2;0;1;0;0;0;0
+4ay617x8;22;control;18;female;19;14;;;;;;;;;;;;9;mild ;0;2;1;1;1;1;1;0;2;0
+ghggm1k7;23;control;4;female;37;18;;;;;;;;;;;;3;no ;0;2;0;0;0;1;0;0;0;0
+1e7copta;24;control;13;male;40;13;;;;;;;;;;;;0;no ;0;0;0;0;0;0;0;0;0;0
+y0n76gg5;25;control;5;female;56;17;;;;;;;;;;;;2;no ;0;1;1;0;0;0;0;0;0;0
+tk9rc93b;26;control;1;female;41;13;;;;;;;;;;;;11;mild ;1;4;0;3;0;0;0;0;3;0
+x6n8do19;27;control;10;female;27;19;;;;;;;;;;;;3;no ;0;1;1;0;0;0;1;0;0;0
+i1d40oys;28;control;2;female;45;13;;;;;;;;;;;;10;mild ;0;4;0;0;0;0;3;3;0;0
+st7dudph;29;control;16;male;18;13;;;;;;;;;;;;14;mild ;0;3;3;0;2;4;2;0;0;0
+1hwj1uba;30;control;11;male;47;13;;;;;;;;;;;;3;no ;1;1;0;0;1;0;0;0;0;0
+kaa25up2;31;control;6;female;61;18;;;;;;;;;;;;4;no ;0;3;0;0;0;1;0;0;0;0
+zmlc6h4w;32;control;15;female;53;13;;;;;;;;;;;;4;no ;1;1;1;0;0;1;0;0;0;0
+csko0bac;33;control;7;female;60;16;;;;;;;;;;;;4;no ;0;1;1;0;0;1;0;0;1;0
+viqu542y;34;control;8;female;39;16;;;;;;;;;;;;9;mild ;0;2;2;0;0;1;2;0;2;0
+7zfafnfq;35;control;17;female;66;13;;;;;;;;;;;;6;no ;0;2;1;1;0;1;1;0;0;0
+pen6shs7;36;control;14;female;47;13;;;;;;;;;;;;0;no ;0;0;0;0;0;0;0;0;0;0

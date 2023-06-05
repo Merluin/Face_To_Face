@@ -1,0 +1,28 @@
+{
+    "id": "9BAFE3BB",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1685967201716.0,
+    "source_on_save": false,
+    "relative_order": 9,
+    "properties": {
+        "id": "655f1d895b6743cda938afb7c17cef36",
+        "name": "contrast",
+        "title": "contrast",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 0,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1685967201716,
+    "read_only": false,
+    "read_only_alternatives": []
+}
