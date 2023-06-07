@@ -26,11 +26,11 @@ devtools::load_all()
 
 
 # loading data ----
-datasetname<-"dataset_OFMT"
+datasetname<-"dataset"
 OFMT_concatenation(datasetname)
 load(paste0("objects/",datasetname,".RData") )
 
-
+dataset <- dataset_OFMT
 
 data<-dataset%>%
   filter(Attempt == 1, Zone.Type== "response_button_text", inclusionCheck == "test")%>%

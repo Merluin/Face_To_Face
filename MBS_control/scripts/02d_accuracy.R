@@ -103,7 +103,6 @@ saveRDS(tab_acc_gew, file = file.path("objects","table_accuracy.rds"))
   x<-correct_data%>%
     mutate(correct = as.factor(correct),
            video_set = as.factor(video_set))%>%
-    filter( subject != 10, emotion != "sadness")%>%
     na.omit()
   
   fit <- glm(correct ~ emotion + group * video_set , data = x, family = binomial)
@@ -124,28 +123,22 @@ saveRDS(tab_acc_gew, file = file.path("objects","table_accuracy.rds"))
   
   #Contrasts
   emotion <- testInteractions(fit, pairwise = "emotion", adjustment = "fdr")
-  group<- testInteractions(fit, pairwise = "group", adjustment = "fdr")
   video<- testInteractions(fit, pairwise = "video_set", adjustment = "fdr")
-  interaction<- testInteractions(fit, pairwise = "group", fixed = "video_set", adjustment = "fdr")
 
-  temp<-rbind(emotion[1:10,],
-                  group[1,],
-                  video[1,],
-                  interaction[1:2,])
+  temp<-rbind(slice(emotion, 1:(n() - 1)) ,
+              slice(video, 1:(n() - 1)))
 
   contrast<-temp%>%
     drop_na(`Pr(>Chisq)`) %>%
     mutate(`Pr(>Chisq)` = round(`Pr(>Chisq)`, 3)) %>%
     kbl(caption = "Contrasts (FDR corrected)") %>%
-    column_spec(5, color = ifelse(contrast$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
+    column_spec(5, color = ifelse(temp$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
     kable_classic(full_width = F, html_font = "Cambria")
   
   # Generate model plot
   emotion <- flexplot(correct~emotion, data= x)
-  group <- flexplot(correct~group, data= x)
   video <- flexplot(correct~video_set, data= x)
-  
-  cowplot::plot_grid( group,video,emotion)
+  plot <- cowplot::plot_grid(video,emotion,  nrow = 2)
   
 
 

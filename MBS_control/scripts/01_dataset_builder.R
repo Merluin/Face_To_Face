@@ -122,12 +122,24 @@ dataset <- rbind(Pct, Gw1, Gw2) %>%
   arrange(Pt.id, Exp.trial) %>%
   dplyr::select(-c(ID.subject, Video.intensity))
 
+# correction demografic info 7_moebius
+dataset$Pt.gender[dataset$Pt.code == "7_moebius"] <- "female"
+
 # Load the Demographic Dataset from the Google Sheet
 # Files are .csv placed in the "original_data/demography" folder
 temp <- list.files("original_data/demography", pattern = 'Partecipanti') 
 demographic <- read.csv(file.path("original_data/demography", temp), sep = ",", header = TRUE, stringsAsFactors = FALSE, na.strings = "aa") %>%
   filter(!is.na(Pt.id))%>%
-  mutate_if(grepl("Asmt", names(.)), ~ as.numeric(gsub(",", ".", .)))
+  mutate_if(grepl("Asmt", names(.)), ~ as.numeric(gsub(",", ".", .)))%>%
+  mutate(Plsy.locus = case_when(Plsy.locus == "Bilaterale"~ "bilateral",
+                                Plsy.locus == "Monolaterale"~ "unilateral",
+                                is.na(Plsy.locus) ~ NA),
+         Surg.type = case_when(Surg.type == "DINAMICA"~ "dynamic",
+                               Surg.type == "STATICA"~ "static",
+                               is.na(Surg.type) ~ NA),
+         Surg.date = ifelse(Surg.date == 0, NA, Surg.date),
+         Surg.date = format(as.Date(as.character(Surg.date), format = "%Y"), "%Y"))
+  
 
 # Combine the Psychopy and Demographic datasets using Pt.code as the key
 temp <- left_join(dataset, demographic%>%dplyr::select(-c(Pt.id,Pt.group)), by = "Pt.code")
