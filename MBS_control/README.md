@@ -29,6 +29,7 @@ For more information, please contact Professor Paola Sessa at Paola.sessa@unipd.
 
 - https://github.com/Merluin/Face_To_Face/blob/main/MBS_control/docs/Report_Perceived_intensity.html 
 
+<a href="https://www.w3schools.com/images/myw3schoolsimage.jpg"> Download Image >></a>
 
 ## References
 
