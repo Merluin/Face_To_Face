@@ -4,7 +4,7 @@
 #  Programmer:  QUETTIER THOMAS
 #  Date:        03/06/2023
 #  Description: General script
-#  Experiment CPO_moebius_AMIM1
+#  Experiment   MBScontrol
 #
 #  Update:      03/06/2023
 ###########################################################################
@@ -20,8 +20,13 @@ create_dir_structure()
 
 
 # Pre-processing-----------------------------------------------------------
-# you will find dataset description in /docs/Dataset_description.html
-run_script("scripts/01_dataset_builder.R")
+
+run_script("scripts/01_dataset_builder.R") # description in /docs/Dataset_description.html
+
+# statistics
+
+run_script("scripts/02_accuracy.R") # for accuracy report see /docs
+run_script("scripts/02_perceived_intensity.R") # for perceived_intensitys ee /docs
 
 
 

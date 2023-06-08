@@ -1,0 +1,78 @@
+---
+title: "**CARIPARO MBS vs control**"
+subtitle: "Accuracy"
+author: 
+  - "Thomas Quettier"
+# output: html_document
+output: bookdown::html_document2
+header-includes:
+- \usepackage{floatrow}
+- \usepackage{subfig}
+
+date: "2023-05-16"
+---
+<style type="text/css">
+   .main-container {max-width: 100%;}
+   .row {display: flex;}
+   .column {flex: 50%;}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, cache=FALSE,include=FALSE}
+devtools::load_all()
+```
+
+```{r data, include=FALSE}
+
+load("../objects/mbs_circular.RData")
+load("../models/perceived_intensity.RData")
+```
+
+## Perceived Intensity
+
+For the intensity responses, we Fit a linear mixed-effects model (LMM) to data, via REML or maximum likelihood.we used lme4 R package [v1.1-33; @lme4].We regressed participants’ intensity for correct responses on these sets of regressors [intensity ∼ emotion * group * video_set +  (1 |ID)] and computed significance levels for the fixed and random effects using the “anova” function, which returns a Type III ANOVA table with significance levels. We used Phia R package [v0.2-1; Rosario-Martinez (2015)].
+
+<br/>
+
+```{r, acctab, echo = F, out.width="100%",  warning=FALSE,message=FALSE}
+table_intensity
+```
+Table 2.1 represents participants' GW1 percieived intensity responses. 
+<br/>
+
+```{r, accfig1, fig.width=10,fig.height=7,echo = F, fig.cap = "Represents participants' GW1 responses mean perceived intensity", warning=FALSE,message=FALSE, fig.align='center'}
+plot_emotion
+```
+<br/>
+
+
+## Satistics
+\n
+### intensity ~ emotion * video_set * group + (1|subject)
+\n
+<br/>
+<div class = "row">
+  <div class = "col col-lg-2">
+  \n
+  </div>
+  <div class = "column">
+```{r,  echo = F,  warning=FALSE,message=FALSE}
+
+chi_table
+
+contrast
+```
+  </div>
+  <div class = "column">
+```{r,fig.width=6,fig.height=12, echo = F,  warning=FALSE,message=FALSE}
+ploteffect
+```
+  </div>
+  <div class="col-lg-2">
+  </div>
+</div>
+
+<br/>
