@@ -24,6 +24,10 @@ Thank you for your interest in the CARIPARO project!
 
 For more information, please contact Professor Paola Sessa at Paola.sessa@unipd.it.
 
+## Access to report
+[Accuracy report](https://github.com/Merluin/Face_To_Face/blob/main/MBS_control/docs/Report_Accuracy.html)
+
+
 ## References
 
 Cremers, Jolien, and Irene Klugkist. 2018. “One Direction? A Tutorial for Circular Data Analysis Using R with Examples in Cognitive Psychology.” Front. Psychol. 9 (October): 2040. https://doi.org/10.3389/fpsyg.2018.02040.
