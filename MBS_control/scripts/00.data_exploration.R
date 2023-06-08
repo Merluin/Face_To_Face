@@ -5,7 +5,7 @@
 #  Date:        04/06/2023
 #     This script explore data
 #
-#  Experiment CPO_moebius_AMIM1
+#  Experiment   MBScontrol
 #
 #  Update:      04/06/2023
 ###########################################################################
@@ -180,6 +180,84 @@ Responses_table <- rbind(dat_neutral,dat_gw1,dat_gw2)%>%
   align(align = "center", part = "all")
 
 
+# neutral resp & GEW Plots ---------------------------------------------------------------
+
+bg <- magick::image_read("files/gew_low_res.png")
+bg <- magick::image_modulate(bg, brightness = 80)
+
+gew_legend <- coords %>%   
+  mutate(mask = "Legend",
+         flip = ifelse(x_emo < 0, degree_emo + 180, degree_emo),
+         emotion = stringr::str_to_title(emotion)) %>% 
+  ggplot() +
+  ggpubr::background_image(bg) +
+  geom_text(aes(x = x_emo*0.75, y = y_emo*0.75, 
+                label = emotion, 
+                angle = flip),
+            size = 5.5, fontface = "bold",
+            check_overlap = TRUE) +
+  facet_grid(. ~ mask) +
+  theme_minimal() +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks = element_blank(),
+        strip.text.x = element_text(size = 20, face = "bold"),
+        strip.text.y = element_text(size = 20, face = "bold"),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "white", color = NA)) +
+  coord_fixed(xlim = c(-300, 300), ylim = c(-300, 300))
+
+
+neutral_plot <- dataset_full %>% 
+  filter(Video.emotion == "neutrality") %>% 
+  ggplot(aes(x = Wheel.x, y = Wheel.y, shape = Pt.group, color = Pt.group)) +
+  ggpubr::background_image(bg) +
+  ggh4x::facet_nested(Video.set ~ Video.emotion, switch="y") +
+  geom_point(alpha = 0.5, show.legend = TRUE, size = 3) +
+  coord_fixed(xlim = c(-300, 300), ylim = c(-300, 300))+
+  guides(shape = guide_legend(title = "Pt.group")) +
+  theme_minimal() +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        strip.text.x = element_text(size = 20, face = "bold"),
+        strip.text.y = element_text(size = 20, face = "bold"),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "white", color = NA),
+        legend.position = "bottom")+
+  facet_grid(Wheel.name ~ Video.set)+
+  guides(color = guide_legend(title = "Group"),
+         shape = guide_legend(title = "Group")) 
+
+plot_gew_legend_neutral <- cowplot::plot_grid(neutral_plot, gew_legend, labels = "AUTO")
+
+
+# Responses Plots Gw1 & Gw2 ---------------------------------------------------------------
+
+plot_gew_emotions <- dataset_full %>% 
+  filter(Video.emotion != "neutrality", Wheel.task == "task", Pt.code != "10_moebius") %>% 
+  ggplot(aes(x = Wheel.x, y = Wheel.y, shape = Pt.group, color = Pt.group)) +
+  ggpubr::background_image(bg) +
+  geom_point(alpha = 0.5, size = 1) +
+  ggh4x::facet_nested( Video.set + Wheel.name  ~ Video.emotion) +
+  coord_fixed(xlim = c(-300, 300), ylim = c(-300, 300)) +
+  theme_minimal() +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        strip.text.x = element_text(size = 14, face = "bold"),
+        strip.text.y = element_text(size = 14, face = "bold"),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "white", color = NA),
+        legend.position = "bottom")+
+  scale_fill_manual(values = c("NA", "white"))
 
 
 
