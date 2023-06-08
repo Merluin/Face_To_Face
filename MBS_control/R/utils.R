@@ -46,8 +46,6 @@ mkdir_if <- function(dir){
 create_dir_structure <- function(){
   mkdir_if("models")
   mkdir_if("objects")
-  mkdir_if("figures")
-  mkdir_if("tables")
   mkdir_if("docs")
   cli::cli_alert_success("Project Structure Created!")
 }
@@ -199,6 +197,32 @@ seg_position <- function(seg_ang){
     is.na(seg_ang) ~ "no resp")
 }  
 
+#' plotaccuracy
+#' @description plot accuracy for 02_accuracy script
+#' @param 
+#'
+#' @return a plot
+#' @export
+#' 
+plotaccuracy <- function(data){
+  data%>%ggplot(aes(x = Resp.category, y = n, fill = Pt.group)) +
+  geom_col(position = position_dodge()) +
+  facet_grid(Video.emotion~Video.set) +
+  cowplot::theme_minimal_hgrid() +
+  theme_paper(font_size = 10) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,
+                                   face = ifelse(levels(dataset_full$Resp.category) %in% unique(dat_summ$Video.emotion),
+                                                 "bold", "plain"),
+                                   size = ifelse(levels(dataset_full$Resp.category) %in% unique(dat_summ$Video.emotion),
+                                                 10, 8)),
+        axis.text.y = element_text(size = 8),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = "bottom",
+        strip.text = element_text(face = "bold", size = 10),
+        panel.grid.major.x = element_blank()) +
+  labs(fill = "group")
+}
 #################################################
 # 
 # END
