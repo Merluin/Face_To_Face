@@ -25,11 +25,10 @@ Thank you for your interest in the CARIPARO project!
 For more information, please contact Professor Paola Sessa at Paola.sessa@unipd.it.
 
 ## Access to report
-[accuracy report](http://htmlpreview.github.io/](http://htmlpreview.github.io/?https://github.com/Merluin/Face_To_Face/blob/main/MBS_control/docs/Report_Accuracy.html)
+[accuracy report](https://github.com/Merluin/Face_To_Face/blob/main/MBS_control/docs/Report_Accuracy.html)
+[Perceived intensity report](https://github.com/Merluin/Face_To_Face/blob/main/MBS_control/docs/Report_Perceived_intensity.html)
 
-- https://github.com/Merluin/Face_To_Face/blob/main/MBS_control/docs/Report_Perceived_intensity.html 
 
-<a href="https://github.com/Merluin/Face_To_Face/blob/main/MBS_control/docs/Report_Accuracy.html"> accuracy report >></a>
 
 ## References
 
