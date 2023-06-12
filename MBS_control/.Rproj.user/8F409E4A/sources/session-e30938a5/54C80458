@@ -3,24 +3,24 @@
     "path": "~/Library/Mobile Documents/com~apple~CloudDocs/01.WORK/09.Cariparo/02.Data/github/Face_To_Face/MBS_control/scripts/02_uncertainty_bais.R",
     "project_path": "scripts/02_uncertainty_bais.R",
     "type": "r_source",
-    "hash": "1777832006",
+    "hash": "0",
     "contents": "",
-    "dirty": false,
+    "dirty": true,
     "created": 1686292214633.0,
     "source_on_save": false,
     "relative_order": 4,
     "properties": {
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "34,5",
-        "scrollLine": "19"
+        "cursorPosition": "56,0",
+        "scrollLine": "43"
     },
     "folds": "",
     "lastKnownWriteTime": 1686326671,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1686326671930,
+    "last_content_update": 1686334536212,
     "read_only": false,
     "read_only_alternatives": []
 }

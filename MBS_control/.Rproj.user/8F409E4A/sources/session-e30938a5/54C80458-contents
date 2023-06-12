@@ -34,6 +34,44 @@ load(file.path("objects","mbs_circular.RData"))
 # 3) compare error variance to optimised variance
 # 4) 
 
+# Calcolo delle frequenze
+category_frequencies <- table(data_subset$category)
+
+# Normalizzazione delle frequenze
+normalized_frequencies <- category_frequencies / sum(category_frequencies)
+
+# Creazione della tabella delle categorie
+category_table <- table(data_subset$emotion, data_subset$category)
+
+# Creazione di una matrice di dissimilarità utilizzando la distanza di Jaccard con normalizzazione delle frequenze
+diss_matrix <- 1 - proxy::simil(as.matrix(category_table), method = "Jaccard", frequency = normalized_frequencies)
+
+# Creazione del dendrogramma
+cluster_result <- hclust(as.dist(diss_matrix), method = "complete")
+cluster_result <- agnes(diss_matrix, method = "complete")
+
+# Visualizzazione del dendrogramma
+plot(cluster_result, main = "Dendrogramma per le risposte ai video di happiness")
+
+
+# Calcolo dei cluster
+clusters <- cutree(cluster_result, k = 3)
+
+# Calcolo delle frequenze delle categorie nel dataset
+category_table <- table(data_subset$category)
+
+# Creazione dei vettori per replicare le informazioni dei cluster
+video_rep <- rep(data_subset$video_set, times = category_table)
+category_rep <- rep(names(category_table), times = category_table)
+cluster_rep <- clusters
+
+# Creazione del dataframe dei dati dei cluster
+cluster_data <- data.frame(video = video_rep, category = category_rep, cluster = cluster_rep)
+
+# Plot delle categorie e dei cluster
+plot(category ~ video, data = cluster_data, col = cluster, pch = 16,
+     main = "Plot delle categorie e dei cluster", xlab = "Video", ylab = "Categoria")
+
 
 
 

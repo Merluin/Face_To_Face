@@ -1,0 +1,42 @@
+# Caricamento dei pacchetti necessari
+library(cluster)
+dataset <- bais_data
+# Preparazione dei dati
+data_subset <- subset(dataset, emotion == "happiness")%>%
+  mutate(vars = paste0(video_set, "_",group))%>%
+  dplyr::select("vars", "category")# Filtra solo le osservazioni con emozione "happiness"
+
+category_frequencies <- table(data_subset$category, data_subset$vars )
+# Creazione della matrice di dissimilarità
+diss_matrix <- proxy::dist(as.matrix(category_frequencies), method = "binary")
+
+# Esecuzione del clustering gerarchico
+cluster_result <- hclust(diss_matrix, method = "ward.D2")
+
+plot(cluster_result, main = "Dendrogramma del clustering gerarchico",
+     xlab = "Osservazioni", ylab = "Distanza")
+# Numero di cluster desiderato
+num_clusters <- 4
+
+# Assegnazione delle osservazioni ai cluster
+clusters <- cutree(cluster_result, k = num_clusters)
+
+cluster_result <- hclust(diss_matrix, method = "ward.D2")
+
+
+# Creazione del dataframe dei dati dei cluster
+category_rep <- rep(names(category_table), each = length(data_subset$vars))
+vars_rep <- rep(data_subset$vars, times = length(names(category_table)))
+cluster_rep <- rep(clusters, each = length(data_subset$vars) * length(names(category_table)))
+
+cluster_data <- data.frame(vars = vars_rep, category = category_rep, cluster = cluster_rep)
+# Plot dei cluster
+sampled_data <- cluster_data %>% sample_n(size = 1000)  # Modifica la dimensione del campione secondo le tue esigenze
+
+# Plot con i dati campionati
+plot(sampled_data$vars, sampled_data$category, col = sampled_data$cluster, pch = 16,
+     main = "Cluster per il modello happiness ~ video_set * group * emotion",
+     xlab = "Video/group", ylab = "emotion")
+
+# Visualizzazione del legame tra variabili e cluster
+table(cluster_data$cluster, cluster_data$emotion)
