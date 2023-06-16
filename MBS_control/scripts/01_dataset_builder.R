@@ -24,19 +24,22 @@ dataset <- list.files(path = "original_data", full.names = TRUE, pattern = 'csv'
 # Modify the dataset by adding subject and trial information
 dataset <- dataset %>%
   mutate(subject = ifelse(tolower(group) == "moebius", participant, participant + length(unique(participant)))) %>%
-  group_by(subject) %>% 
-  mutate(trial = 1:n()) %>% 
-  ungroup()
+  # group_by(subject) %>% 
+  # mutate(trial = 1:n()) %>% 
+  # ungroup()%>%
+  mutate(exp.thisN = ifelse(exp_blocks.thisRepN == 0, exp.thisN+1, exp.thisN+57)) # 56 trial per blocks
+
+# note : exp.ThisRepN blocco 1/2 rename trial exp.thisN
 
 # Define the desired column names for the dataset
-namecols<-c("ID.subject", "Exp.date", "Exp.trial", "Pt.code", "Pt.gender", "Pt.study", "Pt.age", "Pt.group",
+namecols<-c("ID.subject", "Exp.date", "Exp.trial", "Exp.bloch", "Pt.code", "Pt.gender", "Pt.study", "Pt.age", "Pt.group",
             "Wheel.name", "Resp.rt", "Wheel.x", "Wheel.y", "Wheel.task", 
             "Video.name", "Video.intensity", "Video.gender", "Video.emotion", "Video.id")
 
 # Create the "Pct" sub_dataset
 Pct <- dataset %>%
   filter(loop_practice.thisRepN >= 0) %>%
-  dplyr::select("ID.subject", "date", "trial", "subject", "sex", "education", "age",  "group",
+  dplyr::select("ID.subject", "date", "exp.thisN", "exp_blocks.thisRepN","subject", "sex", "education", "age",  "group",
                 "practice", "primary.time", "primary.x", "primary.y",
                 "file_duration", "file", "file_emotion_level", "file_gender",
                 "file_emotion", "file_id") %>%
@@ -48,7 +51,7 @@ Pct <- dataset %>%
 # Create the "Gw1" sub_dataset
 Gw1 <- dataset %>%
   filter(exp_blocks.thisRepN >= 0) %>%
-  dplyr::select("ID.subject", "date", "trial", "subject", "sex", "education", "age",  "group",
+  dplyr::select("ID.subject", "date", "exp.thisN", "exp_blocks.thisRepN", "subject", "sex", "education", "age",  "group",
                 "practice", "primary.time", "primary.x", "primary.y",
                 "file_duration", "file", "file_emotion_level", "file_gender",
                 "file_emotion", "file_id") %>%
@@ -62,7 +65,7 @@ Gw1 <- dataset %>%
 # Create the "Gw2" sub_dataset
 Gw2 <- dataset %>%
   filter(exp_blocks.thisRepN >= 0) %>%
-  dplyr::select("ID.subject", "date", "trial", "subject", "sex", "education", "age", "group",
+  dplyr::select("ID.subject", "date", "exp.thisN", "exp_blocks.thisRepN", "subject", "sex", "education", "age", "group",
                 "practice", "secondary.time", "secondary.x", "secondary.y",
                 "file_duration", "file", "file_emotion_level", "file_gender",
                 "file_emotion", "file_id") %>%
@@ -119,7 +122,7 @@ dataset <- rbind(Pct, Gw1, Gw2) %>%
     Video.emotion = factor(Video.emotion, levels = c("surprise","anger", "disgust", "sadness", "fear", "happiness", "neutrality")),
     Video.id = as.factor(Video.id)
   ) %>%
-  arrange(Pt.id, Exp.trial) %>%
+  arrange(Pt.id) %>%
   dplyr::select(-c(ID.subject, Video.intensity))
 
 # correction demografic info 7_moebius
@@ -227,6 +230,11 @@ dataset_neutral <- dataset_full %>%
 # Saving
 save(coords,dataset_full,dataset_gw1,dataset_neutral,file = file.path("objects", "mbs_circular.RData"))
 
+# Export Pt data gw1 csv for EEG
+for(i in 1:length(Gw1$ID.subject)){
+  temp <- Gw1$ID.subject[i]
+write.csv(Gw1%>%filter(ID.subject==temp), paste0("objects/",temp,"_behavioral.csv"), row.names=FALSE)
+}
 #################################################
 # 
 # END

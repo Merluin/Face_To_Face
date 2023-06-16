@@ -4,7 +4,7 @@
 #  Programmer:  QUETTIER THOMAS 
 #  Date:        0382022
 #     This script performs data analysis for the CARIPARO experiment, 
-#     specifically for the Accuracy measure of the MBScontrol experiment. 
+#     specifically for the Perceived intensity measure of the MBScontrol experiment. 
 #     It computes datasets, generates plots, tables, and fits a 
 #     mixed-effects model to analyze the response Perceived intensity.
 #

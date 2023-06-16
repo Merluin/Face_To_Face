@@ -77,14 +77,19 @@ table_accuracy <- accuracy %>%
            video_set = as.factor(video_set))%>%
     na.omit()
   
-  fit <- glm(correct ~ emotion * group * video_set , data = x, family = binomial)
+  fit <- glmer(correct ~ emotion * group * video_set + (1|subject) , data = x, family = binomial)
 
   # Generate table summary
   table <- tab_model(fit) #, show.df = FALSE, string.p = "p adjusted", p.adjust = "bonferroni")
   
   # Create ANOVA table
   # Perform ANOVA
-  chiquadro <- car::Anova(fit, type = 3)
+  chiquadro <- anova(fit, type = 3) # car::Anova
+  m1<-emmeans(fit, pairwise ~ group|emotion|video_set)
+  pval<-summary(m1$contrasts)
+  p.adjust(pval$p.value,"fdr")
+  
+  
   chi_table <- chiquadro %>%
     drop_na(`Pr(>Chisq)`) %>%
     mutate(`Pr(>Chisq)` = round(`Pr(>Chisq)`, 3)) %>%

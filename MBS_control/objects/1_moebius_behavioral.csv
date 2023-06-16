@@ -1,0 +1,113 @@
+"ID.subject","Exp.date","Exp.trial","Exp.bloch","Pt.code","Pt.gender","Pt.study","Pt.age","Pt.group","Wheel.name","Resp.rt","Wheel.x","Wheel.y","Wheel.task","Video.name","Video.intensity","Video.gender","Video.emotion","Video.id"
+"1_moebius","2022_Jun_24_1543",1,0,1,"m",8,56,"moebius","GW1",8.5403894807605,-122,80,"task","M02-Sadness-Face Forward.mp4","full","maschio","sad",3
+"1_moebius","2022_Jun_24_1543",2,0,1,"m",8,56,"moebius","GW1",2.52838194465858,-116,-169,"task","F01-Fear-Face Forward.mp4","full","femmina","fear",1
+"1_moebius","2022_Jun_24_1543",3,0,1,"m",8,56,"moebius","GW1",2.14601487206255,-130,33,"task","M02-Anger-Face Forward.mp4","full","maschio","angry",3
+"1_moebius","2022_Jun_24_1543",4,0,1,"m",8,56,"moebius","GW1",14.1467044626452,-27,-153,"task","JF2_Disgust.mp4","subtle","femmina","disgusted",6
+"1_moebius","2022_Jun_24_1543",5,0,1,"m",8,56,"moebius","GW1",10.2782254236336,-83,-61,"task","JF1_Disgust.mp4","subtle","femmina","disgusted",5
+"1_moebius","2022_Jun_24_1543",6,0,1,"m",8,56,"moebius","GW1",13.7276399451921,-7,-100,"task","F03-Sadness-Face Forward.mp4","full","femmina","sad",2
+"1_moebius","2022_Jun_24_1543",7,0,1,"m",8,56,"moebius","GW1",1.23322145928887,49,-205,"task","M02-Surprise-Face Forward.mp4","full","maschio","surprised",3
+"1_moebius","2022_Jun_24_1543",8,0,1,"m",8,56,"moebius","GW1",2.21565806827402,-202,38,"task","M03-Anger-Face Forward.mp4","full","maschio","angry",4
+"1_moebius","2022_Jun_24_1543",9,0,1,"m",8,56,"moebius","GW1",1.8812371062595,-115,176,"task","M03-Disgust-Face Forward.mp4","full","maschio","disgusted",4
+"1_moebius","2022_Jun_24_1543",10,0,1,"m",8,56,"moebius","GW1",1.40735045827296,41,-190,"task","F03-Surprise-Face Forward.mp4","full","femmina","surprised",2
+"1_moebius","2022_Jun_24_1543",11,0,1,"m",8,56,"moebius","GW1",15.2831080456936,91,-59,"task","JF2_Fear.mp4","subtle","femmina","fear",6
+"1_moebius","2022_Jun_24_1543",12,0,1,"m",8,56,"moebius","GW1",6.58485171557277,0,0,"task","JF1_Neutral.mp4","subtle","femmina","neutral",5
+"1_moebius","2022_Jun_24_1543",13,0,1,"m",8,56,"moebius","GW1",4.01371451334762,-174,118,"task","F01-Disgust-Face Forward.mp4","full","femmina","disgusted",1
+"1_moebius","2022_Jun_24_1543",14,0,1,"m",8,56,"moebius","GW1",6.11100804671969,-16,91,"task","M02-Disgust-Face Forward.mp4","full","maschio","disgusted",3
+"1_moebius","2022_Jun_24_1543",15,0,1,"m",8,56,"moebius","GW1",10.6056209009448,26,-127,"task","M03-Fear-Face Forward.mp4","full","maschio","fear",4
+"1_moebius","2022_Jun_24_1543",16,0,1,"m",8,56,"moebius","GW1",0.91945229187877,-5,0,"task","F01-Neutral-Face Forward.mp4","full","femmina","neutral",1
+"1_moebius","2022_Jun_24_1543",17,0,1,"m",8,56,"moebius","GW1",9.09385584413576,129,-22,"task","JF1_Surprise.mp4","subtle","femmina","surprised",5
+"1_moebius","2022_Jun_24_1543",18,0,1,"m",8,56,"moebius","GW1",12.7589726960623,51,-86,"task","M03-Surprise-Face Forward.mp4","full","maschio","surprised",4
+"1_moebius","2022_Jun_24_1543",19,0,1,"m",8,56,"moebius","GW1",10.885274258193,-65,-14,"task","JM1_Fear.mp4","subtle","maschio","fear",7
+"1_moebius","2022_Jun_24_1543",20,0,1,"m",8,56,"moebius","GW1",4.09725504459584,-108,-75,"task","JF1_Sadness.mp4","subtle","femmina","sad",5
+"1_moebius","2022_Jun_24_1543",21,0,1,"m",8,56,"moebius","GW1",9.19871274286379,0,0,"task","JM2_Neutral.mp4","subtle","maschio","neutral",8
+"1_moebius","2022_Jun_24_1543",22,0,1,"m",8,56,"moebius","GW1",3.72795427020174,112,83,"task","JM1_Happiness.mp4","subtle","maschio","happy",7
+"1_moebius","2022_Jun_24_1543",23,0,1,"m",8,56,"moebius","GW1",2.51534643747891,158,28,"task","F03-Joy-Face Forward.mp4","full","femmina","happy",2
+"1_moebius","2022_Jun_24_1543",24,0,1,"m",8,56,"moebius","GW1",15.6300959140317,-89,-22,"task","M03-Sadness-Face Forward.mp4","full","maschio","sad",4
+"1_moebius","2022_Jun_24_1543",25,0,1,"m",8,56,"moebius","GW1",8.06916593538062,-94,-22,"task","JF2_Sadness.mp4","subtle","femmina","sad",6
+"1_moebius","2022_Jun_24_1543",26,0,1,"m",8,56,"moebius","GW1",5.72095701060243,-26,138,"task","F01-Anger-Face Forward.mp4","full","femmina","angry",1
+"1_moebius","2022_Jun_24_1543",27,0,1,"m",8,56,"moebius","GW1",19.0099397265758,-14,-68,"task","JM1_Sadness.mp4","subtle","maschio","sad",7
+"1_moebius","2022_Jun_24_1543",28,0,1,"m",8,56,"moebius","GW1",5.67241592768187,14,-65,"task","JM2_Fear.mp4","subtle","maschio","fear",8
+"1_moebius","2022_Jun_24_1543",29,0,1,"m",8,56,"moebius","GW1",4.02774431392481,-82,56,"task","JM1_Disgust.mp4","subtle","maschio","disgusted",7
+"1_moebius","2022_Jun_24_1543",30,0,1,"m",8,56,"moebius","GW1",3.1913354065955,162,103,"task","M03-Joy-Face Forward.mp4","full","maschio","happy",4
+"1_moebius","2022_Jun_24_1543",31,0,1,"m",8,56,"moebius","GW1",8.55698038868559,-16,-103,"task","M03-Neutral-Face Forward.mp4","full","maschio","neutral",4
+"1_moebius","2022_Jun_24_1543",32,0,1,"m",8,56,"moebius","GW1",8.43149767527848,99,-20,"task","JM2_Happiness.mp4","subtle","maschio","happy",8
+"1_moebius","2022_Jun_24_1543",33,0,1,"m",8,56,"moebius","GW1",3.4769413738959,21,-94,"task","JF2_Surprise.mp4","subtle","femmina","surprised",6
+"1_moebius","2022_Jun_24_1543",34,0,1,"m",8,56,"moebius","GW1",5.77671505988837,-85,-64,"task","JM2_Sadness.mp4","subtle","maschio","sad",8
+"1_moebius","2022_Jun_24_1543",35,0,1,"m",8,56,"moebius","GW1",3.88820902741463,-81,-129,"task","M02-Fear-Face Forward.mp4","full","maschio","fear",3
+"1_moebius","2022_Jun_24_1543",36,0,1,"m",8,56,"moebius","GW1",2.20183001303485,-142,-167,"task","F03-Fear-Face Forward.mp4","full","femmina","fear",2
+"1_moebius","2022_Jun_24_1543",37,0,1,"m",8,56,"moebius","GW1",10.2649856051976,112,-78,"task","JM2_Surprise.mp4","subtle","maschio","surprised",8
+"1_moebius","2022_Jun_24_1543",38,0,1,"m",8,56,"moebius","GW1",1.98574792673844,-145,21,"task","JF2_Anger.mp4","subtle","femmina","angry",6
+"1_moebius","2022_Jun_24_1543",39,0,1,"m",8,56,"moebius","GW1",2.81510440722104,149,-33,"task","JF1_Happiness.mp4","subtle","femmina","happy",5
+"1_moebius","2022_Jun_24_1543",40,0,1,"m",8,56,"moebius","GW1",7.99986304410322,21,-101,"task","JM1_Surprise.mp4","subtle","maschio","surprised",7
+"1_moebius","2022_Jun_24_1543",41,0,1,"m",8,56,"moebius","GW1",4.5503215095805,-38,196,"task","F03-Disgust-Face Forward.mp4","full","femmina","disgusted",2
+"1_moebius","2022_Jun_24_1543",42,0,1,"m",8,56,"moebius","GW1",2.60595286664375,-134,34,"task","JF1_Anger.mp4","subtle","femmina","angry",5
+"1_moebius","2022_Jun_24_1543",43,0,1,"m",8,56,"moebius","GW1",4.07621579630722,0,0,"task","F03-Neutral-Face Forward.mp4","full","femmina","neutral",2
+"1_moebius","2022_Jun_24_1543",44,0,1,"m",8,56,"moebius","GW1",18.5093951103854,118,-82,"task","F01-Sadness-Face Forward.mp4","full","femmina","sad",1
+"1_moebius","2022_Jun_24_1543",45,0,1,"m",8,56,"moebius","GW1",13.0515306986481,-12,-103,"task","JF2_Neutral.mp4","subtle","femmina","neutral",6
+"1_moebius","2022_Jun_24_1543",46,0,1,"m",8,56,"moebius","GW1",6.23650743859707,45,-202,"task","F01-Surprise-Face Forward.mp4","full","femmina","surprised",1
+"1_moebius","2022_Jun_24_1543",47,0,1,"m",8,56,"moebius","GW1",4.47342895228394,166,103,"task","M02-Joy-Face Forward.mp4","full","maschio","happy",3
+"1_moebius","2022_Jun_24_1543",48,0,1,"m",8,56,"moebius","GW1",5.96506822777155,183,110,"task","F01-Joy-Face Forward.mp4","full","femmina","happy",1
+"1_moebius","2022_Jun_24_1543",49,0,1,"m",8,56,"moebius","GW1",3.99262490891033,0,0,"task","M02-Neutral-Face Forward.mp4","full","maschio","neutral",3
+"1_moebius","2022_Jun_24_1543",50,0,1,"m",8,56,"moebius","GW1",4.53617880859292,34,149,"task","JM2_Anger.mp4","subtle","maschio","angry",8
+"1_moebius","2022_Jun_24_1543",51,0,1,"m",8,56,"moebius","GW1",3.20550697416638,-79,-55,"task","JM2_Disgust.mp4","subtle","maschio","disgusted",8
+"1_moebius","2022_Jun_24_1543",52,0,1,"m",8,56,"moebius","GW1",5.34995888115645,63,-10,"task","JM1_Neutral.mp4","subtle","maschio","neutral",7
+"1_moebius","2022_Jun_24_1543",53,0,1,"m",8,56,"moebius","GW1",2.94042322258792,-22,135,"task","F03-Anger-Face Forward.mp4","full","femmina","angry",2
+"1_moebius","2022_Jun_24_1543",54,0,1,"m",8,56,"moebius","GW1",4.50139874629167,161,99,"task","JF2_Happiness.mp4","subtle","femmina","happy",6
+"1_moebius","2022_Jun_24_1543",55,0,1,"m",8,56,"moebius","GW1",2.68965697519252,-55,-89,"task","JF1_Fear.mp4","subtle","femmina","fear",5
+"1_moebius","2022_Jun_24_1543",56,0,1,"m",8,56,"moebius","GW1",1.91608195800109,-78,-57,"task","JM1_Anger.mp4","subtle","maschio","angry",7
+"1_moebius","2022_Jun_24_1543",57,1,1,"m",8,56,"moebius","GW1",6.57113944740377,-15,-92,"task","JF1_Neutral.mp4","subtle","femmina","neutral",5
+"1_moebius","2022_Jun_24_1543",58,1,1,"m",8,56,"moebius","GW1",9.99980370723915,-7,-64,"task","JM2_Neutral.mp4","subtle","maschio","neutral",8
+"1_moebius","2022_Jun_24_1543",59,1,1,"m",8,56,"moebius","GW1",1.44914638308092,51,-184,"task","F03-Surprise-Face Forward.mp4","full","femmina","surprised",2
+"1_moebius","2022_Jun_24_1543",60,1,1,"m",8,56,"moebius","GW1",18.9265778473991,-6,-65,"task","JM1_Neutral.mp4","subtle","maschio","neutral",7
+"1_moebius","2022_Jun_24_1543",61,1,1,"m",8,56,"moebius","GW1",2.83599547371978,26,-144,"task","JF1_Surprise.mp4","subtle","femmina","surprised",5
+"1_moebius","2022_Jun_24_1543",62,1,1,"m",8,56,"moebius","GW1",12.2361636055257,-49,-79,"task","JF1_Sadness.mp4","subtle","femmina","sad",5
+"1_moebius","2022_Jun_24_1543",63,1,1,"m",8,56,"moebius","GW1",3.30300578101469,14,-98,"task","JM2_Surprise.mp4","subtle","maschio","surprised",8
+"1_moebius","2022_Jun_24_1543",64,1,1,"m",8,56,"moebius","GW1",2.72439726575703,-104,-154,"task","F03-Fear-Face Forward.mp4","full","femmina","fear",2
+"1_moebius","2022_Jun_24_1543",65,1,1,"m",8,56,"moebius","GW1",3.58135436873272,108,-19,"task","JM1_Happiness.mp4","subtle","maschio","happy",7
+"1_moebius","2022_Jun_24_1543",66,1,1,"m",8,56,"moebius","GW1",6.29948085055003,-113,-83,"task","JF2_Sadness.mp4","subtle","femmina","sad",6
+"1_moebius","2022_Jun_24_1543",67,1,1,"m",8,56,"moebius","GW1",14.2996813129294,-77,-62,"task","JM2_Fear.mp4","subtle","maschio","fear",8
+"1_moebius","2022_Jun_24_1543",68,1,1,"m",8,56,"moebius","GW1",4.89875238630339,-15,100,"task","JF1_Fear.mp4","subtle","femmina","fear",5
+"1_moebius","2022_Jun_24_1543",69,1,1,"m",8,56,"moebius","GW1",2.27856797374625,-120,-87,"task","JM1_Anger.mp4","subtle","maschio","angry",7
+"1_moebius","2022_Jun_24_1543",70,1,1,"m",8,56,"moebius","GW1",1.9439051739173,171,122,"task","JF1_Happiness.mp4","subtle","femmina","happy",5
+"1_moebius","2022_Jun_24_1543",71,1,1,"m",8,56,"moebius","GW1",5.04476950354547,-31,144,"task","M02-Sadness-Face Forward.mp4","full","maschio","sad",3
+"1_moebius","2022_Jun_24_1543",72,1,1,"m",8,56,"moebius","GW1",5.83225404388759,-12,-63,"task","JF2_Neutral.mp4","subtle","femmina","neutral",6
+"1_moebius","2022_Jun_24_1543",73,1,1,"m",8,56,"moebius","GW1",4.98933026962641,-24,135,"task","JF1_Anger.mp4","subtle","femmina","angry",5
+"1_moebius","2022_Jun_24_1543",74,1,1,"m",8,56,"moebius","GW1",2.01349288214169,18,-97,"task","JM1_Sadness.mp4","subtle","maschio","sad",7
+"1_moebius","2022_Jun_24_1543",75,1,1,"m",8,56,"moebius","GW1",6.78699765731653,-54,-76,"task","JM1_Fear.mp4","subtle","maschio","fear",7
+"1_moebius","2022_Jun_24_1543",76,1,1,"m",8,56,"moebius","GW1",4.25757074237208,23,-96,"task","JM1_Surprise.mp4","subtle","maschio","surprised",7
+"1_moebius","2022_Jun_24_1543",77,1,1,"m",8,56,"moebius","GW1",4.04837910931838,-153,99,"task","M02-Disgust-Face Forward.mp4","full","maschio","disgusted",3
+"1_moebius","2022_Jun_24_1543",78,1,1,"m",8,56,"moebius","GW1",2.45264052252332,53,-201,"task","F01-Surprise-Face Forward.mp4","full","femmina","surprised",1
+"1_moebius","2022_Jun_24_1543",79,1,1,"m",8,56,"moebius","GW1",3.69290382424515,-120,-168,"task","M03-Fear-Face Forward.mp4","full","maschio","fear",4
+"1_moebius","2022_Jun_24_1543",80,1,1,"m",8,56,"moebius","GW1",3.74191543245979,-159,-112,"task","JM2_Sadness.mp4","subtle","maschio","sad",8
+"1_moebius","2022_Jun_24_1543",81,1,1,"m",8,56,"moebius","GW1",2.11110266496325,-116,-160,"task","F01-Fear-Face Forward.mp4","full","femmina","fear",1
+"1_moebius","2022_Jun_24_1543",82,1,1,"m",8,56,"moebius","GW1",3.70684317619634,-119,86,"task","JM2_Disgust.mp4","subtle","maschio","disgusted",8
+"1_moebius","2022_Jun_24_1543",83,1,1,"m",8,56,"moebius","GW1",14.4394549091148,-19,-100,"task","M03-Sadness-Face Forward.mp4","full","maschio","sad",4
+"1_moebius","2022_Jun_24_1543",84,1,1,"m",8,56,"moebius","GW1",4.5291805867746,-29,148,"task","F01-Disgust-Face Forward.mp4","full","femmina","disgusted",1
+"1_moebius","2022_Jun_24_1543",85,1,1,"m",8,56,"moebius","GW1",4.46660713735855,25,-133,"task","JF2_Surprise.mp4","subtle","femmina","surprised",6
+"1_moebius","2022_Jun_24_1543",86,1,1,"m",8,56,"moebius","GW1",5.52574835011455,42,-186,"task","M02-Surprise-Face Forward.mp4","full","maschio","surprised",3
+"1_moebius","2022_Jun_24_1543",87,1,1,"m",8,56,"moebius","GW1",1.79062169637928,172,102,"task","M03-Joy-Face Forward.mp4","full","maschio","happy",4
+"1_moebius","2022_Jun_24_1543",88,1,1,"m",8,56,"moebius","GW1",3.86033770052654,-35,139,"task","JF2_Anger.mp4","subtle","femmina","angry",6
+"1_moebius","2022_Jun_24_1543",89,1,1,"m",8,56,"moebius","GW1",3.44212635095573,161,115,"task","F01-Joy-Face Forward.mp4","full","femmina","happy",1
+"1_moebius","2022_Jun_24_1543",90,1,1,"m",8,56,"moebius","GW1",5.72086559975742,-189,39,"task","M02-Anger-Face Forward.mp4","full","maschio","angry",3
+"1_moebius","2022_Jun_24_1543",91,1,1,"m",8,56,"moebius","GW1",1.49098143814626,0,0,"task","M03-Neutral-Face Forward.mp4","full","maschio","neutral",4
+"1_moebius","2022_Jun_24_1543",92,1,1,"m",8,56,"moebius","GW1",2.72441137830901,-74,116,"task","JM1_Disgust.mp4","subtle","maschio","disgusted",7
+"1_moebius","2022_Jun_24_1543",93,1,1,"m",8,56,"moebius","GW1",3.72803156849477,149,-26,"task","JM2_Happiness.mp4","subtle","maschio","happy",8
+"1_moebius","2022_Jun_24_1543",94,1,1,"m",8,56,"moebius","GW1",3.69296316110922,-47,194,"task","M03-Anger-Face Forward.mp4","full","maschio","angry",4
+"1_moebius","2022_Jun_24_1543",95,1,1,"m",8,56,"moebius","GW1",3.66528010848742,50,-201,"task","M03-Surprise-Face Forward.mp4","full","maschio","surprised",4
+"1_moebius","2022_Jun_24_1543",96,1,1,"m",8,56,"moebius","GW1",4.27837809578068,-23,-100,"task","JF2_Disgust.mp4","subtle","femmina","disgusted",6
+"1_moebius","2022_Jun_24_1543",97,1,1,"m",8,56,"moebius","GW1",1.78370814987011,-109,-166,"task","M02-Fear-Face Forward.mp4","full","maschio","fear",3
+"1_moebius","2022_Jun_24_1543",98,1,1,"m",8,56,"moebius","GW1",2.19469034496251,48,196,"task","F01-Anger-Face Forward.mp4","full","femmina","angry",1
+"1_moebius","2022_Jun_24_1543",99,1,1,"m",8,56,"moebius","GW1",3.08665651845877,-22,-142,"task","F03-Sadness-Face Forward.mp4","full","femmina","sad",2
+"1_moebius","2022_Jun_24_1543",100,1,1,"m",8,56,"moebius","GW1",1.95090243351751,186,114,"task","F03-Joy-Face Forward.mp4","full","femmina","happy",2
+"1_moebius","2022_Jun_24_1543",101,1,1,"m",8,56,"moebius","GW1",5.26846916022623,-28,136,"task","JM2_Anger.mp4","subtle","maschio","angry",8
+"1_moebius","2022_Jun_24_1543",102,1,1,"m",8,56,"moebius","GW1",10.5568094343689,-24,102,"task","JF1_Disgust.mp4","subtle","femmina","disgusted",5
+"1_moebius","2022_Jun_24_1543",103,1,1,"m",8,56,"moebius","GW1",3.93678667467248,-171,108,"task","M03-Disgust-Face Forward.mp4","full","maschio","disgusted",4
+"1_moebius","2022_Jun_24_1543",104,1,1,"m",8,56,"moebius","GW1",1.68609804630978,150,-27,"task","M02-Neutral-Face Forward.mp4","full","maschio","neutral",3
+"1_moebius","2022_Jun_24_1543",105,1,1,"m",8,56,"moebius","GW1",3.95785382732356,-43,213,"task","F03-Disgust-Face Forward.mp4","full","femmina","disgusted",2
+"1_moebius","2022_Jun_24_1543",106,1,1,"m",8,56,"moebius","GW1",2.04847693495958,126,86,"task","M02-Joy-Face Forward.mp4","full","maschio","happy",3
+"1_moebius","2022_Jun_24_1543",107,1,1,"m",8,56,"moebius","GW1",2.93348433763367,-37,202,"task","F03-Anger-Face Forward.mp4","full","femmina","angry",2
+"1_moebius","2022_Jun_24_1543",108,1,1,"m",8,56,"moebius","GW1",6.91234341482686,25,-100,"task","JF2_Fear.mp4","subtle","femmina","fear",6
+"1_moebius","2022_Jun_24_1543",109,1,1,"m",8,56,"moebius","GW1",0.898595865279276,1,8,"task","F03-Neutral-Face Forward.mp4","full","femmina","neutral",2
+"1_moebius","2022_Jun_24_1543",110,1,1,"m",8,56,"moebius","GW1",7.81128696205542,-31,-146,"task","F01-Sadness-Face Forward.mp4","full","femmina","sad",1
+"1_moebius","2022_Jun_24_1543",111,1,1,"m",8,56,"moebius","GW1",2.52233888598039,107,81,"task","JF2_Happiness.mp4","subtle","femmina","happy",6
+"1_moebius","2022_Jun_24_1543",112,1,1,"m",8,56,"moebius","GW1",10.0349789209795,-13,-65,"task","F01-Neutral-Face Forward.mp4","full","femmina","neutral",1
