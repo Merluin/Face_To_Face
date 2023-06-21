@@ -128,28 +128,26 @@ saveRDS(tab_acc_gew, file = file.path("objects","table_accuracy.rds"))
   emotion<- testInteractions(fit, pairwise = "emotion", adjustment = "fdr")
   group<- testInteractions(fit, pairwise = "group", adjustment = "fdr")
   video<- testInteractions(fit, pairwise = "video_set", adjustment = "fdr")
-  emotiongroup<- testInteractions(fit, pairwise = "group", fixed = "emotion", adjustment = "fdr")
-  emotionvideoset<- testInteractions(fit, pairwise = "emotion", fixed = "video_set", adjustment = "fdr")
   groupvideoset<- testInteractions(fit, pairwise = "group", fixed = "video_set", adjustment = "fdr")
   
-  contrast<-rbind(group,
-                  video[1,],
-                  interaction[1,])
   
-  p_red<- chiquadro
-  p_red[4,]<-p_red[3,]
+  temp<-rbind(emotion[1:15,],
+              group[1,],
+              video[1,],
+              groupvideoset[1:2,])
   
-  contrast<-contrast%>%
+  contrast<-temp%>%
     drop_na(`Pr(>Chisq)`) %>%
     mutate(`Pr(>Chisq)` = round(`Pr(>Chisq)`, 3)) %>%
     kbl(caption = "Contrasts (FDR corrected)") %>%
+    column_spec(5, color = ifelse(temp$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
     kable_classic(full_width = F, html_font = "Cambria")
   
 
   # Generate model plot
-  emotion <- flexplot(correct~emotion, data= x)
-  group <- flexplot(correct~group, data= x)
-  video <- flexplot(correct~video_set, data= x)
+  emotion <- flexplot(correct~emotion, data= dataset_glm)
+  group <- flexplot(correct~group, data= dataset_glm)
+  video <- flexplot(correct~video_set, data= dataset_glm)
   
   cowplot::plot_grid( group,video,emotion)
 

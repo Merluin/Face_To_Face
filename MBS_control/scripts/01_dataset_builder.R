@@ -231,9 +231,9 @@ dataset_neutral <- dataset_full %>%
 save(coords,dataset_full,dataset_gw1,dataset_neutral,file = file.path("objects", "mbs_circular.RData"))
 
 # Export Pt data gw1 csv for EEG
-for(i in 1:length(dataset_gw1$ID.subject)){
-  temp <- dataset_gw1$ID.subject[i]
-write.csv(dataset_gw1%>%filter(ID.subject==temp), paste0("objects/",temp,"_behavioral.csv"), row.names=FALSE)
+for(i in 1:length(dataset_gw1$Pt.code)){
+  temp <- dataset_gw1$Pt.code[i]
+write.csv(dataset_gw1%>%filter(Pt.code==temp), paste0("objects/",temp,"_behavioral.csv"), row.names=FALSE)
 }
 #################################################
 # 
