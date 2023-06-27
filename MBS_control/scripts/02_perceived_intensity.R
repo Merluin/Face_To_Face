@@ -25,14 +25,12 @@ load(file.path("objects","mbs_circular.RData"))
 # Calculate mean intensity
 intensity_mean <-  dataset_gw1 %>%
   dplyr::select(Pt.code,  Video.set, Video.emotion, Pt.group, Resp.intensity, Resp.correct) %>%
-  'colnames<-'(c("subject" ,"video_set", "emotion", "group", "intensity","correct"))%>%
-  filter(subject != "10_moebius") # no match
+  'colnames<-'(c("subject" ,"video_set", "emotion", "group", "intensity","correct"))
 
 # Calculate intensity mean for neutral dataset
 dat_neutral <- dataset_neutral %>%
   dplyr::select(Pt.code,  Video.set, Video.emotion, Pt.group, Resp.intensity) %>%
-  'colnames<-'(c("subject" ,"video_set", "emotion", "group", "intensity"))%>%
-  filter(subject != "10_moebius") # no match
+  'colnames<-'(c("subject" ,"video_set", "emotion", "group", "intensity"))
 
 # Generate a table summarizing the intensities
 table_intensity <- intensity_mean%>%
@@ -67,7 +65,8 @@ fit <- lmer(intensity ~ emotion * group * video_set + (1|subject),
   visualize(fit, plot = "residuals")
   # Create ANOVA table
   # Perform ANOVA
-  chiquadro <- car::Anova(fit, type = 3)
+  chiquadro <- car::Anova(fit, test.statistic= "Chisq", type = "3") # test.statistic=c("Chisq", "F")
+  
   chi_table <- chiquadro %>%
     drop_na(`Pr(>Chisq)`) %>%
     mutate(`Pr(>Chisq)` = round(`Pr(>Chisq)`, 3)) %>%
@@ -78,10 +77,13 @@ fit <- lmer(intensity ~ emotion * group * video_set + (1|subject),
   #Contrasts
   emotion <- testInteractions(fit, pairwise = "emotion", adjustment = "fdr")
   video<- testInteractions(fit, pairwise = "video_set", adjustment = "fdr")
+  emotionvideo<- testInteractions(fit, pairwise = "video_set", fixed = "emotion", adjustment = "fdr")
   
     # data table of contrast
-  temp<-rbind(slice(emotion, 1:(n() - 1)) ,
-              slice(video, 1:(n() - 1)))
+  temp<-rbind(emotion,
+              video,
+              emotionvideo)
+  
   # kable table object
   contrast<-temp%>%
     drop_na(`Pr(>Chisq)`) %>%
@@ -98,20 +100,27 @@ fit <- lmer(intensity ~ emotion * group * video_set + (1|subject),
     plot()+ 
     labs(title = "Main effect emotion",
          x = "Emotions",
-         y = "Accuracy") +
+         y = "Intensity (px)") +
     themeperso
   
   plotvideo <- ggpredict(fit, terms = c( "video_set"))%>%
     plot()+ 
     labs(title = "Main effect Video set",
          x = "Emotions",
-         y = "Accuracy") +
+         y = "Intensity (px)") +
+    themeperso
+  
+  plotvideoemotion <- ggpredict(fit, terms = c( "emotion", "video_set"))%>%
+    plot()+ 
+    labs(title = "Interaction Video set * emotion",
+         x = "Emotions",
+         y = "Intensity (px)") +
     themeperso
   
   ploteffect<-ploteffect<-cowplot::plot_grid(plotemotion,
-                                 plotvideo,
+                                 plotvideo,plotvideoemotion,
                                  ncol = 1,
-                                 scale = c(.9, .9, .9, .9,.9))
+                                 scale = c(.9, .9, .9))
   
 
 # Save the results

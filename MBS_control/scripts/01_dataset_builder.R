@@ -89,6 +89,7 @@ dataset <- rbind(Pct, Gw1, Gw2) %>%
     Pt.group = factor(Pt.group, levels = c("control","moebius")),
     Pt.study = as.numeric(Pt.study),
     Pt.age = as.numeric(Pt.age),
+    Pt.match = parse_number(ID.subject),
     Wheel.name = factor(Wheel.name, levels = c("GW1","GW2")),
     Wheel.task = as.factor(Wheel.task),
     Wheel.x = str_remove_all(Wheel.x, "[\\[|\\] ']"),
@@ -224,12 +225,15 @@ dataset_gw1 <- dataset_full %>%
   filter(Wheel.task == "task", Wheel.name == "GW1" ,Video.emotion != "neutrality")
 
 
+
 dataset_neutral <- dataset_full %>% 
   filter(Wheel.task == "task", Wheel.name == "GW1" ,Video.emotion == "neutrality")
 
 # Saving
 save(coords,dataset_full,dataset_gw1,dataset_neutral,file = file.path("objects", "mbs_circular.RData"))
 
+dataset_gw1 <- dataset_full %>% 
+  filter(Wheel.task == "task", Wheel.name == "GW1")
 # Export Pt data gw1 csv for EEG
 for(i in 1:length(dataset_gw1$Pt.code)){
   temp <- dataset_gw1$Pt.code[i]

@@ -29,12 +29,12 @@ devtools::load_all()
 
 load("../objects/mbs_circular.RData")
 load("../models/accuracy.RData")
+load("../objects/mbs_info.RData")
 ```
 
 ## Accuracy
 
-For the accuracy responses, we fit generalized linear models (glm),  using Stats R package (v.4.3.0; R Core Team (2012)).We regressed participants’ correct responses (1 = success, 0 = error ) on these sets of regressors [correct ∼ emotion * group * video_set +  (1 |ID)] and computed significance levels for the fixed and random effects using the “anova” function, which returns a Type III ANOVA table with significance levels.
-We used Phia R package [v0.2-1; Rosario-Martinez (2015)].
+For the accuracy responses, we fit generalized linear models (glmer),  using lme4 R package (v.1.1-33; Douglas & al. (2023)).We regressed participants’ correct responses (1 = success, 0 = error ) on these sets of regressors [correct ∼ emotion * group * video_set +  (1 |ID)] and computed significance levels for the fixed and random effects using the “Mixed” function using afex R package (v.1.3-0; Singmann & al. (2016)), which returns p-values via the likelihood ratio tests.
 
 <br/>
 
@@ -66,8 +66,7 @@ plot_freq_gw2
   <div class = "column">
 ```{r,  echo = F,  warning=FALSE,message=FALSE}
 
-chi_table
-
+LRT_table
 contrast
 ```
   </div>
@@ -80,4 +79,12 @@ ploteffect
   </div>
 </div>
 
+
+```{r,fig.height=15, echo = F,  warning=FALSE,message=FALSE, fig.align='center'}
+plot_gew_emotions_gw1
+```
+
+```{r,fig.width=6,fig.height=6, echo = F,  warning=FALSE,message=FALSE, fig.align='center'}
+gew_legend
+```
 <br/>

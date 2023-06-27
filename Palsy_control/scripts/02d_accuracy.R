@@ -38,7 +38,7 @@ accuracy<-correct_data%>%
 
 # Plot accuracy GWE 1 vs GWE 2 ----------------------------------------------
 dat_summ <- dataset_full %>%
-  filter( Video.emotion != "neutrality") %>% # no match
+  filter( Video.emotion != "neutrality" , Wheel.task == "task") %>% # no match
   drop_na(Video.emotion)%>%
   dplyr::select(Pt.code,  Video.set, Video.emotion, Pt.group,Wheel.name, Resp.category, Resp.correct) %>%
   mutate(Resp.correct = 1)%>%
@@ -49,46 +49,22 @@ dat_summ <- dataset_full %>%
           Resp.distribution = Resp.correct/n)%>%
   summarize(Resp.distribution = mean(Resp.distribution))%>%
   group_by(Video.emotion,Video.set,Resp.category,Pt.group,Wheel.name) %>%
-  summarize(Resp.distribution = mean(Resp.distribution))
+  summarize(Resp.distribution = mean(Resp.distribution)*8)
 
+plot_freq_gw1 <- dat_summ %>% 
+  filter(Wheel.name == "GW1" )%>%
+  mutate(Video.set = stringr::str_to_title(Video.set))%>%
+  plotaccuracy()
 
-GEW <- c("GW1", "GW2")
-for(i in 1:length(GEW)){
-plot_gew_discrete <- dat_summ %>% 
-  filter(Wheel.name == GEW[i] )%>%
-  mutate(Video.set = stringr::str_to_title(Video.set)) %>% 
-  ggplot(aes(x = Resp.category, y = Resp.distribution, fill = Pt.group)) +
-  geom_col(position = position_dodge()) +
-  facet_grid(Video.emotion~Video.set) +
-  cowplot::theme_minimal_hgrid() +
-  theme_paper(font_size = 10) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,
-                                   face = ifelse(levels(dataset_full$Resp.category) %in% unique(dat_summ$Video.emotion),
-                                                 "bold", "plain"),
-                                   size = ifelse(levels(dataset_full$Resp.category) %in% unique(dat_summ$Video.emotion),
-                                                 10, 8)),
-        axis.text.y = element_text(size = 8),
-        axis.title.x = element_blank(),
-        axis.title.y = element_blank(),
-        legend.position = "bottom",
-        strip.text = element_text(face = "bold", size = 10),
-        panel.grid.major.x = element_blank()) +
-  labs(fill = "group")
+plot_freq_gw2 <- dat_summ %>% 
+  filter(Wheel.name == "GW2" )%>%
+  mutate(Video.set = stringr::str_to_title(Video.set))%>%
+  plotaccuracy()
 
-#save
-ggsave_plot(plot_gew_discrete,
-            name = file.path("figures", "png", paste0("plot_gew",i,"_discrete")),
-            device = "png", width = 15, height = 10)
-
-saveRDS(plot_gew_discrete, file = file.path("objects",  paste0("plot_frequencies_gew",i,".rds")))
-
-}
-
-             
                  
 # Accuracy GEW ------------------------------------------------------------
 
-tab_acc_gew <- accuracy %>% 
+table_accuracy <- accuracy %>% 
   group_by(group,emotion, video_set) %>% 
   summarise(acc = mean(acc, na.rm = TRUE)) %>% 
   pivot_wider(names_from = emotion, values_from = acc) %>% 
@@ -99,8 +75,6 @@ tab_acc_gew <- accuracy %>%
   theme_vanilla() %>% 
   align(align = "center")
 
-saveRDS(tab_acc_gew, file = file.path("objects","table_accuracy.rds"))
-
 # Fit  correct for each emotion--------------------------------------------
 
 
@@ -109,50 +83,125 @@ saveRDS(tab_acc_gew, file = file.path("objects","table_accuracy.rds"))
     mutate(correct = as.factor(correct))%>%
     na.omit()
   
-  fit <- glm(correct ~ emotion + group * video_set , data = dataset_glm, family = binomial)
+  fit <- glmer(correct ~ emotion + group * video_set + (1|subject), data = dataset_glm, family = binomial)
+  fit_mixed<- mixed(correct ~ emotion * group * video_set + (1|subject) ,method = "LRT", data = dataset_glm, family = binomial, expand_re = TRUE)
   
   # Generate table summary
   table <- tab_model(fit, show.df = FALSE) #, string.p = "p adjusted", p.adjust = "bonferroni")
   
   # Perform ANOVA
   chiquadro <- car::Anova(fit, type = 3)
+  
   # Create ANOVA table
   chi_table <- chiquadro %>%
-    drop_na(`Pr(>Chisq)`) %>%
-    mutate(`Pr(>Chisq)` = round(`Pr(>Chisq)`, 3)) %>%
-    kbl(caption = "Anova(model, type = 3)") %>%
+    kbl(caption = "correct ~ emotion * group * video_set, p-values via partial sums of squares, Accuracy n=20") %>%
     column_spec(4, color = ifelse(chiquadro$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
     kable_classic(full_width = F, html_font = "Cambria")
   
-  #Contrasts
-  emotion<- testInteractions(fit, pairwise = "emotion", adjustment = "fdr")
-  group<- testInteractions(fit, pairwise = "group", adjustment = "fdr")
-  video<- testInteractions(fit, pairwise = "video_set", adjustment = "fdr")
-  groupvideoset<- testInteractions(fit, pairwise = "group", fixed = "video_set", adjustment = "fdr")
-  
-  
-  temp<-rbind(emotion[1:15,],
-              group[1,],
-              video[1,],
-              groupvideoset[1:2,])
-  
-  contrast<-temp%>%
-    drop_na(`Pr(>Chisq)`) %>%
-    mutate(`Pr(>Chisq)` = round(`Pr(>Chisq)`, 3)) %>%
-    kbl(caption = "Contrasts (FDR corrected)") %>%
-    column_spec(5, color = ifelse(temp$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
+  LRT_table <- fit_mixed$anova_table %>%
+    kbl(caption = "correct ~ emotion * group * video_set, p-values via the likelihood ratio tests, Accuracy n=20") %>%
+    column_spec(5, color = ifelse(fit_mixed$anova_table$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
     kable_classic(full_width = F, html_font = "Cambria")
   
-
-  # Generate model plot
-  emotion <- flexplot(correct~emotion, data= dataset_glm)
-  group <- flexplot(correct~group, data= dataset_glm)
-  video <- flexplot(correct~video_set, data= dataset_glm)
+  #Contrasts
+  #Contrasts
+  emotion<-emmeans(fit_mixed, pairwise ~ emotion)
+  tabella_emotion <- data.frame(as.data.frame(summary(emotion)$contrasts))
   
-  cowplot::plot_grid( group,video,emotion)
+  group<-emmeans(fit_mixed, pairwise ~ group)
+  tabella_group <- data.frame(as.data.frame(summary(group)$contrasts))
+  
+  video_set<-emmeans(fit_mixed, pairwise ~ video_set)
+  tabella_video_set <- data.frame(as.data.frame(summary(video_set)$contrasts))
+  
+  emotion_group<-emmeans(fit_mixed, pairwise ~ group|emotion)
+  tabella_emotion_group <- data.frame(as.data.frame(summary(emotion_group)$contrasts))
+  
+  emotion_video_set<-emmeans(fit_mixed, pairwise ~ video_set|emotion)
+  tabella_emotion_video_set <- data.frame(as.data.frame(summary(emotion_video_set)$contrasts))
 
-#################################################
-# 
-# END
-#
-######################################## accuracy
+  
+  
+  contrasts <- rbind(tabella_emotion%>%mutate(video_set = NA,emotion = NA, effect = "emotion"),
+                     tabella_group%>%mutate(video_set = NA,emotion = NA, effect = "group"),
+                     tabella_video_set%>%mutate(video_set = NA,emotion = NA, effect = "video_set"),
+                     tabella_emotion_group%>%mutate(video_set = NA, effect = "emotion|group"),
+                     tabella_emotion_video_set%>%mutate(video_set = NA, effect = "emotion|video_set"))%>%
+    select(effect,video_set, emotion, contrast, estimate, SE, df, z.ratio, p.value)
+
+  # kable table object
+  options(knitr.kable.NA = '')
+  contrast<-contrasts%>%
+    mutate_if(is.numeric,~round(., digits = 4)) %>%
+    kbl(caption = "Contrasts (no corrected)") %>%
+    column_spec(9, color = ifelse(contrasts$p.value <= 0.05, "red", "black")) %>%
+    kable_classic(full_width = F, html_font = "Cambria")
+  
+  # Generate model plot
+  
+  #explorative plots
+  flex_emotion <- flexplot(correct~emotion | video_set*group, data= dataset_glm)
+  flex_video <- flexplot(correct~video_set, data= dataset_glm)
+  flex_plot <- cowplot::plot_grid(video_set,emotion,  nrow = 2)
+  
+  # plot
+  themeperso <- theme_paper(font_size = 10) +
+    theme(legend.position = "bottom")
+  
+  plotemotion <- ggpredict(fit, terms = c( "emotion"))%>%
+    plot()+ 
+    labs(title = "Main effect emotion",
+         x = "Emotions",
+         y = "Accuracy") +
+    themeperso
+  
+  plotegroup <- ggpredict(fit, terms = c( "group"))%>%
+    plot()+ 
+    labs(title = "Main effect group",
+         x = "Emotions",
+         y = "Accuracy") +
+    themeperso
+  
+  plotvideo <- ggpredict(fit, terms = c( "video_set"))%>%
+    plot()+ 
+    labs(title = "Main effect Video set",
+         x = "Emotions",
+         y = "Accuracy") +
+    themeperso
+  
+  plotemogroup <- ggpredict(fit, terms = c("emotion", "group")) %>%
+    plot() + 
+    labs(
+      title = "Interaction  group * emotion",
+      x = "Emotions",
+      y = "Accuracy") +
+    themeperso
+  
+  plotemovideo <- ggpredict(fit, terms = c( "emotion", "video_set"))%>%
+    plot()+ 
+    labs(title = "Interaction video set * emotion",
+         x = "Emotions",
+         y = "Accuracy") +
+    themeperso
+  
+
+  
+  ploteffect<-cowplot::plot_grid(plotemotion,
+                                 plotegroup,
+                                 plotvideo,
+                                 plotemogroup,
+                                 plotemovideo,
+                                 ncol = 1,
+                                 scale = c(.9, .9, .9, .9,.9))
+  
+  
+  
+  
+  # Save the results
+  save(fit, table, chi_table,LRT_table, contrast, ploteffect,table_accuracy, plot_freq_gw1, plot_freq_gw2,  file = file.path("models","accuracy.RData"))
+  
+  #################################################
+  # 
+  # END
+  #
+  ######################################## accuracy

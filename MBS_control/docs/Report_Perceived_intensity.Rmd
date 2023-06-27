@@ -33,7 +33,7 @@ load("../models/perceived_intensity.RData")
 
 ## Perceived Intensity
 
-For the intensity responses, we Fit a linear mixed-effects model (LMM) to data, via REML or maximum likelihood.we used lme4 R package [v1.1-33; @lme4].We regressed participants’ intensity for correct responses on these sets of regressors [intensity ∼ emotion * group * video_set +  (1 |ID)] and computed significance levels for the fixed and random effects using the “anova” function, which returns a Type III ANOVA table with significance levels. We used Phia R package [v0.2-1; Rosario-Martinez (2015)].
+For the intensity responses, we Fit a linear mixed-effects model (LMM) to data, via maximum likelihood. We used lme4 R package [v1.1-33; @lme4].We regressed participants’ intensity for correct responses on these sets of regressors [intensity ∼ emotion * group * video_set +  (1 |ID)] and computed significance levels for the fixed and random effects using the “anova” function, which returns a Type III ANOVA table with significance levels. We used Phia R package [v0.2-1; Rosario-Martinez (2015)].
 
 <br/>
 

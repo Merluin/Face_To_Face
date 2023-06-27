@@ -26,7 +26,6 @@ table(dataset_gw1$Pt.code, dataset_gw1$Video.emotion)
 # Demographic Table ---------------------------------------------------------------
 # dataset for flextable object
 demogaphic<- dataset_gw1%>%
-  filter(Pt.code != "10_moebius")%>%
   group_by(Pt.code)%>%
   filter(row_number()==1)%>%
   ungroup()%>%
@@ -83,7 +82,7 @@ demogaphic_tbl_summary <- rbind(demogaphic_summary[1:2,],
 # Participants Responses Table---------------------------------------------------------------
 # dataset neutral for flextable object
 dat_neutral <- dataset_full%>%
-  filter(Wheel.task == "task", Pt.code != "10_moebius" ,Video.emotion == "neutrality")%>%
+  filter(Wheel.task == "task",Video.emotion == "neutrality")%>%
   dplyr::select(Wheel.name,Pt.code,Pt.group,Video.emotion,Video.set,Wheel.angle,Resp.angle,Resp.diff,Resp.intensity)%>%
   group_by(Wheel.name,Video.emotion,Wheel.angle,Pt.group,Video.set)%>%
   summarise(Resp.angle.mean = NA,
@@ -109,7 +108,7 @@ dat_neutral <- dataset_full%>%
 
 # dataset nemotions for flextable object
 dat_gw1 <- dataset_full%>%
-  filter(Wheel.task == "task",Wheel.name == "GW1", Pt.code != "10_moebius" ,Video.emotion != "neutrality")%>%
+  filter(Wheel.task == "task",Wheel.name == "GW1",Video.emotion != "neutrality")%>%
   drop_na(Resp.angle)%>%
   dplyr::select(Wheel.name,Pt.code,Pt.group,Video.emotion,Video.set,Wheel.angle,Resp.angle,Resp.diff,Resp.intensity)%>%
   group_by(Wheel.name,Video.emotion,Wheel.angle,Pt.group,Video.set)%>%
@@ -141,7 +140,7 @@ dat_gw1 <- dataset_full%>%
 
 # dataset nemotions for flextable object
 dat_gw2 <- dataset_full%>%
-  filter(Wheel.task == "task",Wheel.name == "GW2", Pt.code != "10_moebius" ,Video.emotion != "neutrality")%>%
+  filter(Wheel.task == "task",Wheel.name == "GW2" ,Video.emotion != "neutrality")%>%
   drop_na(Resp.angle)%>%
   dplyr::select(Wheel.name,Pt.code,Pt.group,Video.emotion,Video.set,Wheel.angle,Resp.angle,Resp.diff,Resp.intensity)%>%
   group_by(Wheel.name,Video.emotion,Wheel.angle,Pt.group,Video.set)%>%
@@ -239,26 +238,48 @@ plot_gew_legend_neutral <- cowplot::plot_grid(neutral_plot, gew_legend, labels =
 
 # Responses Plots Gw1 & Gw2 ---------------------------------------------------------------
 
-plot_gew_emotions <- dataset_full %>% 
-  filter(Video.emotion != "neutrality", Wheel.task == "task", Pt.code != "10_moebius") %>% 
+plot_gew_emotions_gw1 <- dataset_full %>% 
+  filter(Video.emotion != "neutrality", Wheel.task == "task", Wheel.name == "GW1") %>% 
   ggplot(aes(x = Wheel.x, y = Wheel.y, shape = Pt.group, color = Pt.group)) +
   ggpubr::background_image(bg) +
   geom_point(alpha = 0.5, size = 1) +
-  ggh4x::facet_nested( Video.set + Wheel.name  ~ Video.emotion) +
+  ggh4x::facet_nested(  Video.emotion + Video.set  ~  Pt.match) +
   coord_fixed(xlim = c(-300, 300), ylim = c(-300, 300)) +
   theme_minimal() +
   theme(axis.text.x = element_blank(),
         axis.text.y = element_blank(),
         axis.title.y = element_blank(),
         axis.title.x = element_blank(),
-        strip.text.x = element_text(size = 14, face = "bold"),
-        strip.text.y = element_text(size = 14, face = "bold"),
+        strip.text.x = element_text(size = 10, face = "bold"),
+        strip.text.y = element_text(size = 10, face = "bold"),
         panel.grid.major = element_blank(), 
         panel.grid.minor = element_blank(),
         panel.background = element_rect(fill = "white", color = NA),
         legend.position = "bottom")+
   scale_fill_manual(values = c("NA", "white"))
 
+plot_gew_emotions_gw2 <- dataset_full %>% 
+  filter(Video.emotion != "neutrality", Wheel.task == "task", Wheel.name == "GW2") %>% 
+  ggplot(aes(x = Wheel.x, y = Wheel.y, shape = Pt.group, color = Pt.group)) +
+  ggpubr::background_image(bg) +
+  geom_point(alpha = 0.5, size = 1) +
+  ggh4x::facet_nested(  Video.emotion + Video.set  ~  Pt.match) +
+  coord_fixed(xlim = c(-300, 300), ylim = c(-300, 300)) +
+  theme_minimal() +
+  theme(axis.text.x = element_blank(),
+        axis.text.y = element_blank(),
+        axis.title.y = element_blank(),
+        axis.title.x = element_blank(),
+        strip.text.x = element_text(size = 10, face = "bold"),
+        strip.text.y = element_text(size = 10, face = "bold"),
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(),
+        panel.background = element_rect(fill = "white", color = NA),
+        legend.position = "bottom")+
+  scale_fill_manual(values = c("NA", "white"))
+
+# Saving
+save(plot_gew_legend_neutral,plot_gew_emotions_gw1,plot_gew_emotions_gw2,gew_legend,Responses_table,demogaphic_tbl_summary,demogaphic_tbl_full,file = file.path("objects", "mbs_info.RData"))
 
 
 #################################################
