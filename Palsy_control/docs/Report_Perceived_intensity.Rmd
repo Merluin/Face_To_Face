@@ -1,5 +1,5 @@
 ---
-title: "**CARIPARO MBS vs control**"
+title: "**CARIPARO Palsy vs control**"
 subtitle: "Percived Intensity"
 author: 
   - "Thomas Quettier"
@@ -27,7 +27,7 @@ devtools::load_all()
 
 ```{r data, include=FALSE}
 
-load("../objects/mbs_circular.RData")
+load("../objects/palsy_circular.RData")
 load("../models/perceived_intensity.RData")
 ```
 

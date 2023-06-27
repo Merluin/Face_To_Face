@@ -67,7 +67,6 @@ table_accuracy <- accuracy %>%
   align(align = "center")
 
 
-
 # Fit  correct for each emotion--------------------------------------------
 
   # Adatta il modello di regressione logistica
