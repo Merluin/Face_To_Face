@@ -223,6 +223,25 @@ plotaccuracy <- function(data){
         panel.grid.major.x = element_blank()) +
   labs(fill = "group")
 }
+
+#' au_compromition
+#' @description Pt selection based on facial action units deficit
+#' @param 
+#'
+#' @return a vector
+#' @export
+#' 
+au_compromition <- function(emotion,level){
+
+  #Paola's selection
+  case_when( emotion == "happiness" ~ c(2,5,NA,NA,NA,NA,NA,NA,NA,NA),
+             emotion == "surprise" ~ c(1,2,3,4,5,6,7,8,9,10), 
+             emotion == "sadness" ~ c(1,2,3,4,6,9,NA,NA,NA,NA), 
+             emotion == "fear" ~ c(1,2,5,9,NA,NA,NA,NA,NA,NA),    
+             emotion == "disgust" ~ c(1,2,3,4,6,9,10,NA,NA,NA),
+             emotion == "anger" ~ c(1,2,3,4,6,9,NA,NA,NA,NA)) 
+  
+}
 #################################################
 # 
 # END

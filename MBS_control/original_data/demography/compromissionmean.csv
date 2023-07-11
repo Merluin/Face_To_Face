@@ -1,0 +1,161 @@
+Wheel.order;Wheel.emotion;Action.units;Action.muscles;Sunnybrook:muscle;Pt.code;Palsy.score
+3;happiness;12;Zygomatic Major;ZIG-RIS;1_moebius;2
+8;surprise;1,2;Frontalis, pars lateralis;FRO;1_moebius;1
+8;surprise;25;separazione delle labra, Depressor Labii, Relaxation of Mentalis (AU17), Orbicularis Oris;OBI-OBS;1_moebius;1
+9;sadness;1,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;1_moebius;1
+10;fear;1,2,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;1_moebius;1
+10;fear;20;Risorius;ZIG-RIS;1_moebius;2
+14;disgust;10;Levator Labii Superioris, Caput infraorbitalis;OBI-OBS;1_moebius;1
+14;disgust;9;Levator labii superioris alaquae nasi;ELS-EAN;1_moebius;1
+16;anger;4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;1_moebius;1
+16;anger;10,23,24;orbicolaris oris;OBI-OBS;1_moebius;1
+3;happiness;12;Zygomatic Major;ZIG-RIS;2_moebius;1
+8;surprise;1,2;Frontalis, pars lateralis;FRO;2_moebius;2
+8;surprise;25;separazione delle labra, Depressor Labii, Relaxation of Mentalis (AU17), Orbicularis Oris;OBI-OBS;2_moebius;1
+9;sadness;1,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;2_moebius;2
+10;fear;1,2,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;2_moebius;2
+10;fear;20;Risorius;ZIG-RIS;2_moebius;1
+14;disgust;10;Levator Labii Superioris, Caput infraorbitalis;OBI-OBS;2_moebius;1
+14;disgust;9;Levator labii superioris alaquae nasi;ELS-EAN;2_moebius;1
+16;anger;4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;2_moebius;2
+16;anger;10,23,24;orbicolaris oris;OBI-OBS;2_moebius;1
+3;happiness;12;Zygomatic Major;ZIG-RIS;3_moebius;3
+8;surprise;1,2;Frontalis, pars lateralis;FRO;3_moebius;1
+8;surprise;25;separazione delle labra, Depressor Labii, Relaxation of Mentalis (AU17), Orbicularis Oris;OBI-OBS;3_moebius;1
+9;sadness;1,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;3_moebius;1
+10;fear;1,2,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;3_moebius;1
+10;fear;20;Risorius;ZIG-RIS;3_moebius;3
+14;disgust;10;Levator Labii Superioris, Caput infraorbitalis;OBI-OBS;3_moebius;1
+14;disgust;9;Levator labii superioris alaquae nasi;ELS-EAN;3_moebius;1
+16;anger;4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;3_moebius;1
+16;anger;10,23,24;orbicolaris oris;OBI-OBS;3_moebius;1
+3;happiness;12;Zygomatic Major;ZIG-RIS;4_moebius;3
+8;surprise;1,2;Frontalis, pars lateralis;FRO;4_moebius;1
+8;surprise;25;separazione delle labra, Depressor Labii, Relaxation of Mentalis (AU17), Orbicularis Oris;OBI-OBS;4_moebius;1
+9;sadness;1,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;4_moebius;1
+10;fear;1,2,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;4_moebius;1
+10;fear;20;Risorius;ZIG-RIS;4_moebius;3
+14;disgust;10;Levator Labii Superioris, Caput infraorbitalis;OBI-OBS;4_moebius;1
+14;disgust;9;Levator labii superioris alaquae nasi;ELS-EAN;4_moebius;1
+16;anger;4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;4_moebius;1
+16;anger;10,23,24;orbicolaris oris;OBI-OBS;4_moebius;1
+3;happiness;12;Zygomatic Major;ZIG-RIS;5_moebius;1
+8;surprise;1,2;Frontalis, pars lateralis;FRO;5_moebius;1
+8;surprise;25;separazione delle labra, Depressor Labii, Relaxation of Mentalis (AU17), Orbicularis Oris;OBI-OBS;5_moebius;3
+9;sadness;1,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;5_moebius;1
+10;fear;1,2,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;5_moebius;1
+10;fear;20;Risorius;ZIG-RIS;5_moebius;1
+14;disgust;10;Levator Labii Superioris, Caput infraorbitalis;OBI-OBS;5_moebius;3
+14;disgust;9;Levator labii superioris alaquae nasi;ELS-EAN;5_moebius;2
+16;anger;4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;5_moebius;1
+16;anger;10,23,24;orbicolaris oris;OBI-OBS;5_moebius;3
+3;happiness;12;Zygomatic Major;ZIG-RIS;6_moebius;4
+8;surprise;1,2;Frontalis, pars lateralis;FRO;6_moebius;1
+8;surprise;25;separazione delle labra, Depressor Labii, Relaxation of Mentalis (AU17), Orbicularis Oris;OBI-OBS;6_moebius;1
+9;sadness;1,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;6_moebius;1
+10;fear;1,2,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;6_moebius;1
+10;fear;20;Risorius;ZIG-RIS;6_moebius;4
+14;disgust;10;Levator Labii Superioris, Caput infraorbitalis;OBI-OBS;6_moebius;1
+14;disgust;9;Levator labii superioris alaquae nasi;ELS-EAN;6_moebius;1
+16;anger;4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;6_moebius;1
+16;anger;10,23,24;orbicolaris oris;OBI-OBS;6_moebius;1
+3;happiness;12;Zygomatic Major;ZIG-RIS;7_moebius;3
+8;surprise;1,2;Frontalis, pars lateralis;FRO;7_moebius;2
+8;surprise;25;separazione delle labra, Depressor Labii, Relaxation of Mentalis (AU17), Orbicularis Oris;OBI-OBS;7_moebius;5
+9;sadness;1,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;7_moebius;2
+10;fear;1,2,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;7_moebius;2
+10;fear;20;Risorius;ZIG-RIS;7_moebius;3
+14;disgust;10;Levator Labii Superioris, Caput infraorbitalis;OBI-OBS;7_moebius;5
+14;disgust;9;Levator labii superioris alaquae nasi;ELS-EAN;7_moebius;1
+16;anger;4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;7_moebius;2
+16;anger;10,23,24;orbicolaris oris;OBI-OBS;7_moebius;5
+3;happiness;12;Zygomatic Major;ZIG-RIS;8_moebius;4
+8;surprise;1,2;Frontalis, pars lateralis;FRO;8_moebius;2
+8;surprise;25;separazione delle labra, Depressor Labii, Relaxation of Mentalis (AU17), Orbicularis Oris;OBI-OBS;8_moebius;5
+9;sadness;1,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;8_moebius;2
+10;fear;1,2,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;8_moebius;2
+10;fear;20;Risorius;ZIG-RIS;8_moebius;4
+14;disgust;10;Levator Labii Superioris, Caput infraorbitalis;OBI-OBS;8_moebius;5
+14;disgust;9;Levator labii superioris alaquae nasi;ELS-EAN;8_moebius;2
+16;anger;4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;8_moebius;2
+16;anger;10,23,24;orbicolaris oris;OBI-OBS;8_moebius;5
+3;happiness;12;Zygomatic Major;ZIG-RIS;9_moebius;2
+8;surprise;1,2;Frontalis, pars lateralis;FRO;9_moebius;1
+8;surprise;25;separazione delle labra, Depressor Labii, Relaxation of Mentalis (AU17), Orbicularis Oris;OBI-OBS;9_moebius;1
+9;sadness;1,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;9_moebius;1
+10;fear;1,2,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;9_moebius;1
+10;fear;20;Risorius;ZIG-RIS;9_moebius;2
+14;disgust;10;Levator Labii Superioris, Caput infraorbitalis;OBI-OBS;9_moebius;1
+14;disgust;9;Levator labii superioris alaquae nasi;ELS-EAN;9_moebius;1
+16;anger;4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;9_moebius;1
+16;anger;10,23,24;orbicolaris oris;OBI-OBS;9_moebius;1
+3;happiness;12;Zygomatic Major;ZIG-RIS;10_moebius;3
+8;surprise;1,2;Frontalis, pars lateralis;FRO;10_moebius;1
+8;surprise;25;separazione delle labra, Depressor Labii, Relaxation of Mentalis (AU17), Orbicularis Oris;OBI-OBS;10_moebius;2
+9;sadness;1,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;10_moebius;1
+10;fear;1,2,4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;10_moebius;1
+10;fear;20;Risorius;ZIG-RIS;10_moebius;3
+14;disgust;10;Levator Labii Superioris, Caput infraorbitalis;OBI-OBS;10_moebius;2
+14;disgust;9;Levator labii superioris alaquae nasi;ELS-EAN;10_moebius;1
+16;anger;4;Depressor Glabellae, Depressor Supercilli, Currugator;FRO;10_moebius;1
+16;anger;10,23,24;orbicolaris oris;OBI-OBS;10_moebius;2
+3;happiness;;;;1_control;5
+8;surprise;;;;1_control;5
+9;sadness;;;;1_control;5
+10;fear;;;;1_control;5
+14;disgust;;;;1_control;5
+16;anger;;;;1_control;5
+3;happiness;;;;2_control;5
+8;surprise;;;;2_control;5
+9;sadness;;;;2_control;5
+10;fear;;;;2_control;5
+14;disgust;;;;2_control;5
+16;anger;;;;2_control;5
+3;happiness;;;;3_comtrol;5
+8;surprise;;;;3_comtrol;5
+9;sadness;;;;3_comtrol;5
+10;fear;;;;3_comtrol;5
+14;disgust;;;;3_comtrol;5
+16;anger;;;;3_comtrol;5
+3;happiness;;;;4_control;5
+8;surprise;;;;4_control;5
+9;sadness;;;;4_control;5
+10;fear;;;;4_control;5
+14;disgust;;;;4_control;5
+16;anger;;;;4_control;5
+3;happiness;;;;5_control;5
+8;surprise;;;;5_control;5
+9;sadness;;;;5_control;5
+10;fear;;;;5_control;5
+14;disgust;;;;5_control;5
+16;anger;;;;5_control;5
+3;happiness;;;;6_control;5
+8;surprise;;;;6_control;5
+9;sadness;;;;6_control;5
+10;fear;;;;6_control;5
+14;disgust;;;;6_control;5
+16;anger;;;;6_control;5
+3;happiness;;;;7_control;5
+8;surprise;;;;7_control;5
+9;sadness;;;;7_control;5
+10;fear;;;;7_control;5
+14;disgust;;;;7_control;5
+16;anger;;;;7_control;5
+3;happiness;;;;8_control;5
+8;surprise;;;;8_control;5
+9;sadness;;;;8_control;5
+10;fear;;;;8_control;5
+14;disgust;;;;8_control;5
+16;anger;;;;8_control;5
+3;happiness;;;;9_control;5
+8;surprise;;;;9_control;5
+9;sadness;;;;9_control;5
+10;fear;;;;9_control;5
+14;disgust;;;;9_control;5
+16;anger;;;;9_control;5
+3;happiness;;;;10_control;5
+8;surprise;;;;10_control;5
+9;sadness;;;;10_control;5
+10;fear;;;;10_control;5
+14;disgust;;;;10_control;5
+16;anger;;;;10_control;5

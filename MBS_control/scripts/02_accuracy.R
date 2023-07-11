@@ -24,13 +24,14 @@ load(file.path("objects","mbs_circular.RData"))
 
 # Calculate mean intensity
 correct_data <-  dataset_gw1 %>%
-  dplyr::select(Pt.code,  Video.set, Video.emotion, Pt.group, Resp.correct) %>%
-  'colnames<-'(c("subject" ,"video_set", "emotion", "group", "correct"))
+  dplyr::select(Pt.code, Pt.match, Video.set, Video.emotion, Pt.group, Resp.correct) %>%
+  'colnames<-'(c("subject" ,"match","video_set", "emotion", "group", "correct"))
 
 accuracy<-correct_data%>%
-  group_by(subject, group, emotion, video_set) %>%
+  group_by(subject,match,group, emotion, video_set) %>%
   summarise(correct = sum(correct),
             acc = correct/8) # 8 = 4 video id * 2 blocks
+
 
 
 # Plot accuracy GWE 1 vs GWE 2 ----------------------------------------------
@@ -70,12 +71,34 @@ table_accuracy <- accuracy %>%
 # Fit  correct for each emotion--------------------------------------------
 
   # Adatta il modello di regressione logistica
-  x<-correct_data%>%
-    mutate(correct = as.factor(correct),
-           video_set = as.factor(video_set))%>%
-    na.omit()
+#anger
+#disgust
+  x <- correct_data %>%
+  mutate(correct = as.factor(correct),
+         video_set = as.factor(video_set)) %>%
+  na.omit() 
+
+# subject != "5_moebius",
+# subject != "7_moebius",
+# subject != "8_moebius",
+# subject != "10_moebius",
+
+  # filter(match != 5,
+  #        match != 7,
+  #        match != 8,
+  #        match != 10,
+  #        emotion == "anger")
+
+  fit <- glmer(correct ~ emotion * group * video_set  + (1|subject) , data = x, family = binomial)
+  fit0 <- glmer(correct ~ group  + (1|subject) , data = x, family = binomial)
+  fit01 <- glmer(correct ~  video_set + (1|subject) , data = x, family = binomial)
   
-  fit <- glmer(correct ~ emotion * group * video_set + (1|subject) , data = x, family = binomial)
+  fit1 <- glmer(correct ~ emotion * group  + (1|subject) , data = x, family = binomial)
+  fit2 <- glmer(correct ~ emotion + group   + (1|subject) , data = x, family = binomial)
+  fit3 <- glmer(correct ~ emotion  + (1|subject) , data = x, family = binomial)
+  fit4 <- glmer(correct ~ emotion + group  + (1|subject) , data = x, family = binomial)
+  
+  
   fit_mixed<- mixed(correct ~ emotion * group * video_set + (1|subject) ,method = "LRT", data = x, family = binomial, expand_re = TRUE)
   #fit_pb<- mixed(correct ~ emotion * group * video_set + (1|subject) ,method = "PB", data = x, family = binomial, expand_re = TRUE)
   

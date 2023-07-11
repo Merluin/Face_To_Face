@@ -1,0 +1,370 @@
+---
+title: "**CARIPARO MBS vs control**"
+subtitle: "Accuracy Palsy"
+author: 
+  - "Thomas Quettier"
+# output: html_document
+output: bookdown::html_document2
+header-includes:
+- \usepackage{floatrow}
+- \usepackage{subfig}
+
+date: "2023-05-16"
+---
+<style type="text/css">
+   .main-container {max-width: 100%;}
+   .row {display: flex;}
+   .column {flex: 50%;}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, cache=FALSE,include=FALSE}
+devtools::load_all()
+```
+
+```{r data, include=FALSE}
+
+load("../objects/mbs_circular.RData")
+
+palsymean <- read.csv(file.path("../original_data/demography/compromissionmean.csv"), sep = ";", header = TRUE, stringsAsFactors = FALSE, na.strings = "aa") %>%
+  group_by(Wheel.emotion,Pt.code) %>%
+  summarise(Palsy.score = mean(Palsy.score))%>%
+  'colnames<-'(c("emotion" ,"subject","palsy"))%>%
+  mutate(palsy = (palsy-5)*-1)
+
+# Calculate mean intensity
+correct_data <-  dataset_gw1 %>%
+  dplyr::select(Pt.code, Pt.match, Video.set, Video.emotion, Pt.group, Resp.correct) %>%
+  'colnames<-'(c("subject" ,"match","video_set", "emotion", "group", "correct"))
+
+accuracy<-correct_data%>%
+  group_by(subject,match,group, emotion, video_set) %>%
+  summarise(correct = sum(correct),
+            acc = correct/8) # 8 = 4 video id * 2 blocks
+
+correct_data <- left_join(correct_data,palsymean, by = c("subject","emotion"))
+
+au_deficit <- c("happiness","surprise","sadness","fear","disgust","anger")
+
+
+```
+
+## Accuracy
+
+For the accuracy responses, we fit generalized linear models (glmer),  using lme4 R package (v.1.1-33; Douglas & al. (2023)).We regressed participants’ correct responses (1 = success, 0 = error ) on these sets of regressors [correct ∼ emotion * group * video_set +  (1 |ID)] 
+
+<!-- and computed significance levels for the fixed and random effects using the “Anova” function using car R package (v.3.1-2; Fox & al. (2023)), which returns p-values via the likelihood ratio tests. -->
+
+
+## Satistics
+\n
+### Correct ~ palsy + (1|subject)
+
+'palsy' is computed as follow:
+mean of Sunnybrook muscle evaluation score when involved in the action units related to a specific emotion. Score range from 0:complete movement  to 5: no movement.A 0 default score was added to control group participants.
+
+```{r dat, echo = F }
+
+head(correct_data, n = 5)
+ 
+```
+## anger
+
+```{r anger, include=FALSE}
+
+deficit <- au_deficit[6] # anger
+selection <- au_compromition(deficit)
+  # Adatta il modello di regressione logistica
+  x<-correct_data%>%
+    mutate(correct = as.factor(correct),
+           video_set = as.factor(video_set))%>%
+    na.omit()%>% filter(emotion == deficit)
+
+  fitAF <- glmer(correct ~ palsy  + (1|subject) , data = x%>%filter(video_set == "ADFES"), family = binomial)
+  fitJF <- glmer(correct ~ palsy  + (1|subject) , data = x%>%filter(video_set == "JeFEE"), family = binomial)
+  
+  
+  p<-summary(fitAF)
+  pvalAF<- round(p$coefficients[2,4],3)
+ 
+  p<-summary(fitJF)
+  pvalJF<- round(p$coefficients[2,4],3)
+ 
+```
+
+\n
+<br/>
+<div class = "row">
+  <div class = "col col-lg-2">
+  \n
+  </div>
+  <div class = "column">
+```{r,fig.width=3,fig.height=4,  echo = F,  warning=FALSE,message=FALSE}
+
+plot(allEffects(fitAF),main = "anger ADFES all subjects",
+     sub=paste0("p.value = ",pvalAF))
+```
+  </div>
+  <div class = "column">
+```{r,fig.width=3,fig.height=4, echo = F,  warning=FALSE,message=FALSE}
+plot(allEffects(fitJF),main = "anger JeFEE all subjects",
+     sub=paste0("p.value = ",pvalJF))
+```
+  </div>
+  <div class="col-lg-2">
+  </div>
+</div>
+
+
+
+## disgust
+
+```{r disgust, include=FALSE}
+
+deficit <- au_deficit[5] # disgust
+selection <- au_compromition(deficit)
+
+  # Adatta il modello di regressione logistica
+  x<-correct_data%>%
+    mutate(correct = as.factor(correct),
+           video_set = as.factor(video_set))%>%
+    na.omit()%>% filter(emotion == deficit)
+
+  fitAF <- glmer(correct ~ palsy  + (1|subject) , data = x%>%filter(video_set == "ADFES"), family = binomial)
+  fitJF <- glmer(correct ~ palsy  + (1|subject) , data = x%>%filter(video_set == "JeFEE"), family = binomial)
+  
+  
+  p<-summary(fitAF)
+  pvalAF<- round(p$coefficients[2,4],3)
+ 
+  p<-summary(fitJF)
+  pvalJF<- round(p$coefficients[2,4],3)
+
+```
+
+\n
+<br/>
+<div class = "row">
+  <div class = "col col-lg-2">
+  \n
+  </div>
+  <div class = "column">
+```{r,fig.width=3,fig.height=4,  echo = F,  warning=FALSE,message=FALSE}
+
+plot(allEffects(fitAF),main = "disgust ADFES all subjects",
+     sub=paste0("p.value = ",pvalAF))
+```
+  </div>
+  <div class = "column">
+```{r,fig.width=3,fig.height=4, echo = F,  warning=FALSE,message=FALSE}
+plot(allEffects(fitJF),main = "disgust JeFEE all subjects",
+     sub=paste0("p.value = ",pvalJF))
+```
+  </div>
+  <div class="col-lg-2">
+  </div>
+</div>
+
+
+## fear
+
+```{r fear, include=FALSE}
+
+deficit <- au_deficit[4] # fear
+selection <- au_compromition(deficit)
+
+  # Adatta il modello di regressione logistica
+  x<-correct_data%>%
+    mutate(correct = as.factor(correct),
+           video_set = as.factor(video_set))%>%
+    na.omit()%>% filter(emotion == deficit)
+
+  fitAF <- glmer(correct ~ palsy  + (1|subject) , data = x%>%filter(video_set == "ADFES"), family = binomial)
+  fitJF <- glmer(correct ~ palsy  + (1|subject) , data = x%>%filter(video_set == "JeFEE"), family = binomial)
+  
+  
+  p<-summary(fitAF)
+  pvalAF<- round(p$coefficients[2,4],3)
+ 
+  p<-summary(fitJF)
+  pvalJF<- round(p$coefficients[2,4],3)
+  
+ 
+```
+
+\n
+<br/>
+<div class = "row">
+  <div class = "col col-lg-2">
+  \n
+  </div>
+  <div class = "column">
+```{r,fig.width=3,fig.height=4,  echo = F,  warning=FALSE,message=FALSE}
+
+plot(allEffects(fitAF),main = "fear ADFES all subjects",
+     sub=paste0("p.value = ",pvalAF))
+```
+  </div>
+  <div class = "column">
+```{r,fig.width=3,fig.height=4, echo = F,  warning=FALSE,message=FALSE}
+plot(allEffects(fitJF),main = "fear JeFEE all subjects",
+     sub=paste0("p.value = ",pvalJF))
+```
+  </div>
+  <div class="col-lg-2">
+  </div>
+</div>
+
+
+## sadness
+
+```{r sadness, include=FALSE}
+
+deficit <- au_deficit[3] # sadness
+selection <- au_compromition(deficit)
+
+  # Adatta il modello di regressione logistica
+  x<-correct_data%>%
+    mutate(correct = as.factor(correct),
+           video_set = as.factor(video_set))%>%
+    na.omit()%>% filter(emotion == deficit)
+
+  fitAF <- glmer(correct ~ palsy  + (1|subject) , data = x%>%filter(video_set == "ADFES"), family = binomial)
+  fitJF <- glmer(correct ~ palsy  + (1|subject) , data = x%>%filter(video_set == "JeFEE"), family = binomial)
+  
+  
+  p<-summary(fitAF)
+  pvalAF<- round(p$coefficients[2,4],3)
+ 
+  p<-summary(fitJF)
+  pvalJF<- round(p$coefficients[2,4],3)
+
+```
+
+\n
+<br/>
+<div class = "row">
+  <div class = "col col-lg-2">
+  \n
+  </div>
+  <div class = "column">
+```{r,fig.width=3,fig.height=4,  echo = F,  warning=FALSE,message=FALSE}
+
+plot(allEffects(fitAF),main = "sadness ADFES all subjects",
+     sub=paste0("p.value = ",pvalAF))
+```
+  </div>
+  <div class = "column">
+```{r,fig.width=3,fig.height=4, echo = F,  warning=FALSE,message=FALSE}
+plot(allEffects(fitJF),main = "sadness JeFEE all subjects",
+     sub=paste0("p.value = ",pvalJF))
+```
+  </div>
+  <div class="col-lg-2">
+  </div>
+</div>
+
+
+## Happiness
+
+```{r Happiness, include=FALSE}
+
+deficit <- au_deficit[1] # happiness
+selection <- au_compromition(deficit)
+
+  # Adatta il modello di regressione logistica
+  x<-correct_data%>%
+    mutate(correct = as.factor(correct),
+           video_set = as.factor(video_set))%>%
+    na.omit()%>% filter(emotion == deficit)
+
+  fitAF <- glmer(correct ~ palsy  + (1|subject) , data = x%>%filter(video_set == "ADFES"), family = binomial)
+  fitJF <- glmer(correct ~ palsy  + (1|subject) , data = x%>%filter(video_set == "JeFEE"), family = binomial)
+  
+  
+  p<-summary(fitAF)
+  pvalAF<- round(p$coefficients[2,4],3)
+ 
+  p<-summary(fitJF)
+  pvalJF<- round(p$coefficients[2,4],3)
+  
+```
+
+\n
+<br/>
+<div class = "row">
+  <div class = "col col-lg-2">
+  \n
+  </div>
+  <div class = "column">
+```{r,fig.width=3,fig.height=4,  echo = F,  warning=FALSE,message=FALSE}
+
+plot(allEffects(fitAF),main = "Happiness ADFES all subjects",
+     sub=paste0("p.value = ",pvalAF))
+```
+  </div>
+  <div class = "column">
+```{r,fig.width=3,fig.height=4, echo = F,  warning=FALSE,message=FALSE}
+plot(allEffects(fitJF),main = "Happiness JeFEE all subjects",
+     sub=paste0("p.value = ",pvalJF))
+```
+  </div>
+  <div class="col-lg-2">
+  </div>
+</div>
+
+## surprise
+
+```{r surprise, include=FALSE}
+
+deficit <- au_deficit[2] # surprise
+selection <- au_compromition(deficit)
+
+  # Adatta il modello di regressione logistica
+  x<-correct_data%>%
+    mutate(correct = as.factor(correct),
+           video_set = as.factor(video_set))%>%
+    na.omit()%>% filter(emotion == deficit)
+
+  fitAF <- glmer(correct ~ palsy  + (1|subject) , data = x%>%filter(video_set == "ADFES"), family = binomial)
+  fitJF <- glmer(correct ~ palsy  + (1|subject) , data = x%>%filter(video_set == "JeFEE"), family = binomial)
+  
+  
+   p<-summary(fitAF)
+   pvalAF<- round(p$coefficients[2,4],3)
+ 
+  p<-summary(fitJF)
+  pvalJF<- round(p$coefficients[2,4],3)
+  
+
+
+```
+
+
+\n
+<br/>
+<div class = "row">
+  <div class = "col col-lg-2">
+  \n
+  </div>
+  <div class = "column">
+```{r,fig.width=3,fig.height=4,  echo = F,  warning=FALSE,message=FALSE}
+
+plot(allEffects(fitAF),main = "surprise ADFES all subjects",
+     sub=paste0("p.value = ",pvalAF))
+```
+  </div>
+  <div class = "column">
+```{r,fig.width=3,fig.height=4, echo = F,  warning=FALSE,message=FALSE}
+plot(allEffects(fitJF),main = "surprise JeFEE all subjects",
+     sub=paste0("p.value = ",pvalJF))
+```
+  </div>
+  <div class="col-lg-2">
+  </div>
+</div>
+
+
