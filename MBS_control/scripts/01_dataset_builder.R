@@ -32,14 +32,14 @@ dataset <- dataset %>%
 # note : exp.ThisRepN blocco 1/2 rename trial exp.thisN
 
 # Define the desired column names for the dataset
-namecols<-c("ID.subject", "Exp.date", "Exp.trial", "Exp.bloch", "Pt.code", "Pt.gender", "Pt.study", "Pt.age", "Pt.group",
+namecols<-c("ID.subject", "Exp.trigger" ,"Exp.date", "Exp.trial", "Exp.bloch", "Pt.code", "Pt.gender", "Pt.study", "Pt.age", "Pt.group",
             "Wheel.name", "Resp.rt", "Wheel.x", "Wheel.y", "Wheel.task", 
             "Video.name", "Video.intensity", "Video.gender", "Video.emotion", "Video.id")
 
 # Create the "Pct" sub_dataset
 Pct <- dataset %>%
   filter(loop_practice.thisRepN >= 0) %>%
-  dplyr::select("ID.subject", "date", "exp.thisN", "exp_blocks.thisRepN","subject", "sex", "education", "age",  "group",
+  dplyr::select("ID.subject", "trigger","date", "exp.thisN", "exp_blocks.thisRepN","subject", "sex", "education", "age",  "group",
                 "practice", "primary.time", "primary.x", "primary.y",
                 "file_duration", "file", "file_emotion_level", "file_gender",
                 "file_emotion", "file_id") %>%
@@ -51,7 +51,7 @@ Pct <- dataset %>%
 # Create the "Gw1" sub_dataset
 Gw1 <- dataset %>%
   filter(exp_blocks.thisRepN >= 0) %>%
-  dplyr::select("ID.subject", "date", "exp.thisN", "exp_blocks.thisRepN", "subject", "sex", "education", "age",  "group",
+  dplyr::select("ID.subject", "trigger","date", "exp.thisN", "exp_blocks.thisRepN", "subject", "sex", "education", "age",  "group",
                 "practice", "primary.time", "primary.x", "primary.y",
                 "file_duration", "file", "file_emotion_level", "file_gender",
                 "file_emotion", "file_id") %>%
@@ -65,7 +65,7 @@ Gw1 <- dataset %>%
 # Create the "Gw2" sub_dataset
 Gw2 <- dataset %>%
   filter(exp_blocks.thisRepN >= 0) %>%
-  dplyr::select("ID.subject", "date", "exp.thisN", "exp_blocks.thisRepN", "subject", "sex", "education", "age", "group",
+  dplyr::select("ID.subject", "trigger","date", "exp.thisN", "exp_blocks.thisRepN", "subject", "sex", "education", "age", "group",
                 "practice", "secondary.time", "secondary.x", "secondary.y",
                 "file_duration", "file", "file_emotion_level", "file_gender",
                 "file_emotion", "file_id") %>%
@@ -82,6 +82,7 @@ dataset <- rbind(Pct, Gw1, Gw2) %>%
     Exp.date = strptime(Exp.date, format = "%Y_%b_%d_%H%M"),
     Exp.date = as.Date(Exp.date, format = "%Y_%b_%d"),
     Exp.trial = as.numeric(Exp.trial),
+    Exp.trigger = as.numeric(Exp.trigger),
     Pt.id = as.factor(Pt.code),
     Pt.code = as.factor(ID.subject),
     Pt.gender = ifelse(Pt.gender == "f", "female", "male"),

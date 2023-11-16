@@ -28,7 +28,7 @@ devtools::load_all()
 # loading data ----
 datasetname<-"dataset"
 OFMT_concatenation(datasetname)
-load(paste0("objects/",datasetname,".RData") )
+dataset_OFMT<-readRDS(paste0("objects/",datasetname,"_OFMT.rds") )
 
 dataset <- dataset_OFMT
 

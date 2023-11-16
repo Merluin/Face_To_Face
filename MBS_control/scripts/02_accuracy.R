@@ -107,7 +107,15 @@ table_accuracy <- accuracy %>%
   
   # Create ANOVA table
   # Perform ANOVA
+  
+  fit <- glmer(correct ~ emotion * group  + (1|subject) , data = x%>%filter(video_set == "JeFEE"), family = binomial)
   chiquadro <- car::Anova(fit, type = 3) 
+  plot_model(fit)
+  
+  
+  fit <- mixed(correct ~ emotion * group + (1|subject) ,method = "LRT", data = x%>%filter(video_set == "JeFEE"), family = binomial, expand_re = TRUE)
+  emotion_group<-emmeans(fit, pairwise ~ group|emotion)
+  flexplot(correct ~ emotion * group, data = x%>%filter(video_set == "JeFEE"))
   # chiquadro <- anova(fit) # car::Anova
   # summary(chiquadro)$coefficients
   

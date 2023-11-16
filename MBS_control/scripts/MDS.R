@@ -1,0 +1,155 @@
+###########################################################################
+#
+#  Experiment:  CARIPARO
+#  Programmer:  QUETTIER THOMAS 
+#  Date:        08112023
+#     This script performs multidimensional scaling (MDS) for the CARIPARO experiment, 
+#     specifically for the GWE responses of the MBScontrol experiment.
+#
+#  Experiment   MBScontrol
+#
+#  Update:      08/11/2023
+###########################################################################
+
+rm(list=ls()) # remove all objects
+
+# Functions & libraries---------------------------------------------------------------
+
+devtools::load_all()
+library(MASS)
+library(ggforce)
+
+
+# Data --------------------------------------------------------------------
+load(file.path("objects","mbs_circular.RData"))
+
+# Calculate mean intensity
+data <- dataset_full %>%
+  dplyr::select(Pt.code, Video.set, Video.emotion, Pt.group, Wheel.y, Wheel.x) %>%
+  group_by(Pt.code, Video.set, Video.emotion, Pt.group) %>%
+  summarise_at(vars(Wheel.y, Wheel.x), list(mean = ~mean(.))) %>%
+  'colnames<-'(c("subject" ,"video_set", "emotion", "group", "y", "x"))
+
+data_video <- data %>%
+  group_by(subject, group, video_set) %>%
+  summarise(y = mean(y, na.rm = TRUE), x = mean(x, na.rm = TRUE))
+
+data_full <- data %>%
+  group_by(subject, group) %>%
+  summarise(y = mean(y, na.rm = TRUE), x = mean(x, na.rm = TRUE))
+
+# Create a list of data subsets, one for each unique combination of "emotion" and "video_set"
+data_subsets <- split(data, list(data$emotion, data$video_set))
+
+
+# Create a PDF file to save the plots
+pdf("mds_plots.pdf")
+
+# Calculate the Euclidean distance matrix based on x and y coordinates for the current subset
+dissimilarity_matrix <- dist(data_full[, c("x", "y")], method = "euclidean")
+
+# Perform classical MDS for the current subset
+mds_result <- cmdscale(dissimilarity_matrix, k = 2)  # k = 2 for 2D representation
+
+# Cluster the MDS-projected data using k-means clustering
+k <- 2 # Select the number of clusters
+kmeans_result <- kmeans(mds_result, k)
+
+# Assign cluster labels to the original data
+data_full$cluster <- kmeans_result$cluster
+
+# Create a ggplot2 scatterplot of the MDS results with hull plotting
+mds_df <- data.frame(X = mds_result[, 1], Y = mds_result[, 2], Cluster = data_full$cluster, Participant = data_full$subject, Group = data_full$group)
+
+p <- ggplot(mds_df, aes(x = X, y = Y, color = Group, label = Participant)) +
+  geom_point() +
+  geom_mark_hull(aes(fill = Cluster, label = NULL), alpha = 0.5) +  # Adjust transparency of hull areas
+  geom_text(size = 3, vjust = -1) +  # Adjust size and vertical position of labels
+  theme_minimal() +
+  theme(legend.position = "none") + 
+  ggtitle(paste("MDS Plot with Hulls for full data"))
+
+print(p)
+
+#### video-set
+# Calculate the Euclidean distance matrix based on x and y coordinates for the current subset
+dissimilarity_matrix <- dist(data_video[, c("x", "y")], method = "euclidean")
+
+# Perform classical MDS for the current subset
+mds_result <- cmdscale(dissimilarity_matrix, k = 2)  # k = 2 for 2D representation
+
+# Cluster the MDS-projected data using k-means clustering
+k <- 2 # Select the number of clusters
+kmeans_result <- kmeans(mds_result, k)
+
+# Assign cluster labels to the original data
+data_video$cluster <- kmeans_result$cluster
+
+# Create a ggplot2 scatterplot of the MDS results with hull plotting
+mds_df <- data.frame(X = mds_result[, 1], Y = mds_result[, 2], Cluster = data_video$cluster, Participant = data_video$subject, Group = data_video$group, video = data_video$video_set)
+adfes <- mds_df%>%filter(video == "ADFES")
+
+p <- ggplot(adfes, aes(x = X, y = Y, color = Group, label = Participant)) +
+  geom_point() +
+  geom_mark_hull(aes(fill = Cluster, label = NULL), alpha = 0.5) +  # Adjust transparency of hull areas
+  geom_text(size = 3, vjust = -1) +  # Adjust size and vertical position of labels
+  theme_minimal() +
+  theme(legend.position = "none") + 
+  ggtitle(paste("MDS Plot with Hulls for ADEFS data"))
+
+print(p)
+
+jefee <- mds_df%>%filter(video == "JeFEE")
+
+p <- ggplot(jefee, aes(x = X, y = Y, color = Group, label = Participant)) +
+  geom_point() +
+  geom_mark_hull(aes(fill = Cluster, label = NULL), alpha = 0.5) +  # Adjust transparency of hull areas
+  geom_text(size = 3, vjust = -1) +  # Adjust size and vertical position of labels
+  theme_minimal() +
+  theme(legend.position = "none") + 
+  ggtitle(paste("MDS Plot with Hulls for JeFEE data"))
+
+print(p)
+
+
+###### emotions
+for (subset_name in names(data_subsets)) {
+  subset_data <- data_subsets[[subset_name]]%>%
+    drop_na()
+  
+  # Calculate the Euclidean distance matrix based on x and y coordinates for the current subset
+  dissimilarity_matrix <- dist(subset_data[, c("x", "y")], method = "euclidean")
+  
+  # Perform classical MDS for the current subset
+  mds_result <- cmdscale(dissimilarity_matrix, k = 2)  # k = 2 for 2D representation
+  
+  # Cluster the MDS-projected data using k-means clustering
+  k <- 2 # Select the number of clusters
+  kmeans_result <- kmeans(mds_result, k)
+  
+  # Assign cluster labels to the original data
+  subset_data$cluster <- kmeans_result$cluster
+  
+  # Create a ggplot2 scatterplot of the MDS results for the current subset
+  mds_df <- data.frame(X = mds_result[, 1], Y = mds_result[, 2],Cluster = subset_data$cluster, Participant = subset_data$subject, Group = subset_data$group, Emotion = subset_data$emotion)
+  
+  p <- ggplot(mds_df, aes(x = X, y = Y, color = Group, label = Participant)) +
+    geom_point() +
+    geom_mark_hull(aes(fill = Cluster, label = NULL), alpha = 0.5) +  # Adjust transparency of hull areas
+    geom_text(size = 3, vjust = -1) +  # Adjust size and vertical position of labels
+    theme_minimal() +
+    theme(legend.position = "none") + 
+    ggtitle(paste("MDS Plot for Subset:", subset_name))
+  
+  print(p)
+  
+  # Save each plot to a file if needed
+  # ggsave(paste("mds_plot_", subset_name, ".png"), plot = p, width = 6, height = 6)
+}
+dev.off()
+
+#################################################
+# 
+# END
+#
+######################################## MDS

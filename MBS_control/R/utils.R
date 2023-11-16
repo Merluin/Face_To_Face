@@ -242,6 +242,46 @@ au_compromition <- function(emotion,level){
              emotion == "anger" ~ c(1,2,3,4,6,9,NA,NA,NA,NA)) 
   
 }
+#' distance_clockwise
+#' @description Funzione per calcolare la distanza tra due etichette nel senso orario della GWE
+#' @param 
+#'
+#' @return a nb
+#' @export
+#' 
+distance_clockwise <- function(reference, response) {
+  
+  labels <- c("pride", "elation", "happiness", "satisfaction",
+              "relief","hope", "interest","surprise", 
+              "sadness", "fear", "shame", "guilt",
+              "envy","disgust","contempt","anger")
+  
+  index1 <- match(reference, labels)
+  index2 <- match(response, labels)
+  distance <- abs(index2 - index1)
+  if (distance > 8) {
+    distance <- 16 - distance
+  }
+  return(distance)
+}
+
+#' agreement
+#' @description agreement
+#' @param 
+#'
+#' @return a test
+#' @export
+#' 
+agreement <- function(data) {
+  
+  agree <- sum(data[1, 1] , data[2, 2])
+  full <- sum(data)
+  k <- agree/ full
+  
+  return(k)
+}
+
+
 #################################################
 # 
 # END

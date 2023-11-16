@@ -174,7 +174,7 @@ ploteffect<-cowplot::plot_grid(plotgroup,
           ncol = 1,
           scale = c(.9, .9, .9))
   
-  
+
   
 
 # Save the results

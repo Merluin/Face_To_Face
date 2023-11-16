@@ -57,8 +57,8 @@ plot_emotion<- flexplot(intensity~emotion+group |  video_set,
 # Fit  correct for each emotion--------------------------------------------
   
 # Fit linear mixed-effects model
-fit <- lmer(intensity ~ emotion * group * video_set + (1|subject),
-            data = intensity_mean%>%filter(correct == 1))
+fit <- lmer(intensity ~ group * video_set + (1|subject),
+            data = intensity_mean%>%filter(correct == 1 , emotion == "anger"))
   
   # Generate table summary
   table <- tab_model(fit) #, show.df = FALSE, string.p = "p adjusted", p.adjust = "bonferroni")
