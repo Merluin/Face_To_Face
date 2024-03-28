@@ -30,6 +30,13 @@ data <- dataset_full %>%
   summarise_at(vars(Wheel.y, Wheel.x), list(mean = ~mean(.))) %>%
   'colnames<-'(c("subject" ,"video_set", "emotion", "group", "y", "x"))
 
+process_data <- function(data) {
+  data %>%
+    dplyr::select(Pt.code, Video.set, Video.emotion, Pt.group, Wheel.y, Wheel.x) %>%
+    group_by(Pt.code, Video.set, Video.emotion, Pt.group) %>%
+    summarise(across(c(Wheel.y, Wheel.x), mean, na.rm = TRUE), .groups = 'drop')
+}
+
 data_video <- data %>%
   group_by(subject, group, video_set) %>%
   summarise(y = mean(y, na.rm = TRUE), x = mean(x, na.rm = TRUE))
