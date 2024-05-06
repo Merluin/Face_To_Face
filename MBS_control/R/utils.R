@@ -8,6 +8,34 @@
 #  Update:      23/08/2022
 ###########################################################################
 
+#' replace_csv
+#' @description replace csv and a column in csv 
+#' @param file a .csv
+#'
+#' @export
+#'
+replace_csv <- function(targetcolumn, valueIwant) {
+  # Prompt the user to choose a file
+  filepath <- file.choose()
+  
+  # Read the CSV file
+  data <- read.csv(filepath)
+  
+  # Check if the target column exists
+  if(!targetcolumn %in% colnames(data)) {
+    stop("The specified column does not exist in the CSV file.")
+  }
+  
+  # Replace the values in the target column
+  data[[targetcolumn]] <- valueIwant
+  
+  # Write the modified data frame back to the original file
+  write.csv(data, filepath, row.names = FALSE)
+  
+  cat("The values in column", targetcolumn, "have been replaced with", valueIwant, "\nFile saved at:", filepath)
+}
+
+
 #' run_script
 #' @description source a script and return a nice message
 #' @param file a character indicating the file path and name
@@ -69,6 +97,7 @@ clean_practice <- function(x){
     dplyr::select(-contains(c("started","stopped")))
   return(x)
 }
+
 
 #' calc_dist
 #' @description Calculate the euclidean distance between two points

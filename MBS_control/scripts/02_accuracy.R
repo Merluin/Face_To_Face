@@ -89,85 +89,131 @@ table_accuracy <- accuracy %>%
   #        match != 10,
   #        emotion == "anger")
 
-  fit <- glmer(correct ~ emotion * group * video_set  + (1|subject) , data = x, family = binomial)
-  fit0 <- glmer(correct ~ group  + (1|subject) , data = x, family = binomial)
-  fit01 <- glmer(correct ~  video_set + (1|subject) , data = x, family = binomial)
-  
-  fit1 <- glmer(correct ~ emotion * group  + (1|subject) , data = x, family = binomial)
-  fit2 <- glmer(correct ~ emotion + group   + (1|subject) , data = x, family = binomial)
-  fit3 <- glmer(correct ~ emotion  + (1|subject) , data = x, family = binomial)
-  fit4 <- glmer(correct ~ emotion + group  + (1|subject) , data = x, family = binomial)
-  
-  
-  fit_mixed<- mixed(correct ~ emotion * group * video_set + (1|subject) ,method = "LRT", data = x, family = binomial, expand_re = TRUE)
-  #fit_pb<- mixed(correct ~ emotion * group * video_set + (1|subject) ,method = "PB", data = x, family = binomial, expand_re = TRUE)
-  
+  fit0 <- glmer(correct ~ group   + (1|subject) , data = x, family = binomial)
+  fit1 <- glmer(correct ~ emotion + group + (1|subject) , data = x, family = binomial)
+  fit2 <- glmer(correct ~ emotion + group + video_set + (1|subject) , data = x, family = binomial)
+  fit3 <- glmer(correct ~ emotion * group + (1|subject) , data = x, family = binomial)
+  fit4 <- glmer(correct ~ emotion * group * video_set + (1|subject) , data = x, family = binomial)
+anova(fit0,fit1,fit2,fit3,fit4)
+fit <- fit4
   # Generate table summary
   table <- tab_model(fit ) #, show.df = FALSE, string.p = "p adjusted", p.adjust = "bonferroni")
   
   # Create ANOVA table
   # Perform ANOVA
-  
-  fit <- glmer(correct ~ emotion * group  + (1|subject) , data = x%>%filter(video_set == "JeFEE"), family = binomial)
-  chiquadro <- car::Anova(fit, type = 3) 
-  plot_model(fit)
-  
-  
-  fit <- mixed(correct ~ emotion * group + (1|subject) ,method = "LRT", data = x%>%filter(video_set == "JeFEE"), family = binomial, expand_re = TRUE)
-  emotion_group<-emmeans(fit, pairwise ~ group|emotion)
-  flexplot(correct ~ emotion * group, data = x%>%filter(video_set == "JeFEE"))
-  # chiquadro <- anova(fit) # car::Anova
-  # summary(chiquadro)$coefficients
-  
+    
+    chiquadro <- car::Anova(fit, type = 3) 
+    plot(allEffects(fit))
+    
   chi_table <- chiquadro %>%
     kbl(caption = "correct ~ emotion * group * video_set, p-values via partial sums of squares, Accuracy n=20") %>%
     column_spec(4, color = ifelse(chiquadro$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
     kable_classic(full_width = F, html_font = "Cambria")
+  # Convert the HTML output of kable to flextable
+  chi_table <- chiquadro %>%
+    tibble::rownames_to_column("Effect") %>%
+    dplyr::select(Effect, everything()) %>%
+    flextable() %>% 
+    colformat_double(digits = 2) %>% 
+    autofit()%>% 
+    theme_vanilla() %>% 
+    align(align = "center")
   
-  LRT_table <- fit_mixed$anova_table %>%
-    kbl(caption = "correct ~ emotion * group * video_set, p-values via the likelihood ratio tests, Accuracy n=20") %>%
-    column_spec(5, color = ifelse(fit_mixed$anova_table$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
-    kable_classic(full_width = F, html_font = "Cambria")
-  
-  # interaction<- testInteractions(fit, pairwise = "group", fixed = c("video_set", "emotion"), adjustment = "fdr")
-  # interaction2<- testInteractions(fit, pairwise = "group", fixed = c("video_set", "emotion"))
-  
-  
+  # Conditional formatting in flextable
+  # ft_chi_table <- set_table_properties(ft_chi_table, layout = "autofit")
+  # ft_chi_table <- color(ft_chi_table, i = ~ `Pr(>Chisq)` <= 0.05, j = 4, color = "red")
+  # 
   #Contrasts
-  emotion<-emmeans(fit_mixed, pairwise ~ emotion)
+  emotion<-emmeans(fit, pairwise ~ emotion)
   tabella_emotion <- data.frame(as.data.frame(summary(emotion)$contrasts))
   
-  video_set<-emmeans(fit_mixed, pairwise ~ video_set)
+  video_set<-emmeans(fit, pairwise ~ video_set)
   tabella_video_set <- data.frame(as.data.frame(summary(video_set)$contrasts))
   
-  emotion_group<-emmeans(fit_mixed, pairwise ~ group|emotion)
-  tabella_emotion_group <- data.frame(as.data.frame(summary(emotion_group)$contrasts))
-  
-  emotion_video_set<-emmeans(fit_mixed, pairwise ~ video_set|emotion)
+  emotion_video_set<-emmeans(fit, pairwise ~ video_set|emotion)
   tabella_emotion_video_set <- data.frame(as.data.frame(summary(emotion_video_set)$contrasts))
   
-  emotion_group_video_set<-emmeans(fit_mixed, pairwise ~ group|emotion|video_set)
+  emotion_group_video_set<-emmeans(fit, pairwise ~ group|emotion|video_set)
   tabella_emotion_group_video_set <- data.frame(as.data.frame(summary(emotion_group_video_set)$contrasts))
   
   
   
   contrasts <- rbind(tabella_emotion%>%mutate(video_set = "all",emotion = NA, effect = "emotion"),
                      tabella_video_set%>%mutate(video_set = NA,emotion = "all", effect = "video_set"),
-                     tabella_emotion_group%>%mutate(video_set = "all", effect = "emotion|group"),
                      tabella_emotion_video_set%>%mutate(video_set = NA, effect = "emotion|video_set"),
                      tabella_emotion_group_video_set%>%mutate(effect = "group|emotion|video_set"))%>%
     select(effect,video_set, emotion, contrast, estimate, SE, df, z.ratio, p.value)
   
-  # kable table object
-  options(knitr.kable.NA = '')
+  
   contrast<-contrasts%>%
+    flextable() %>% 
+    colformat_double(digits = 2) %>% 
+    autofit() %>%
+    fontsize( size = 8)%>% 
+    theme_vanilla() %>% 
+    align(align = "center")%>%
+    width(j = 1:9, width = .7) 
+  
+
+  # glmer by video set
+  JeFEEdata <- x %>% filter(video_set == "JeFEE")
+  ADFESdata <- x %>% filter(video_set == "ADFES")
+  fit_JeFEE <- glmer(correct ~ emotion * group  + (1|subject) , data = JeFEEdata, family = binomial)
+  fit_ADFES <- glmer(correct ~ emotion * group  + (1|subject) , data = ADFESdata, family = binomial)
+  
+  JeFEE_chiquadro <- car::Anova(fit_JeFEE, type = 3) 
+  JeFEE_table<- JeFEE_chiquadro %>%
+    tibble::rownames_to_column("Effect") %>%
+    dplyr::select(Effect, everything()) %>%
+    flextable() %>% 
+    colformat_double(digits = 2) %>% 
+    autofit()%>%
+    fontsize( size = 10)%>% 
+    theme_vanilla() %>% 
+    align(align = "center")
+  
+  emotion<-emmeans(fit_JeFEE, pairwise ~ emotion)
+  tabella_emotion <- data.frame(as.data.frame(summary(emotion)$contrasts))
+  
+  emotiongroup<-emmeans(fit_JeFEE, pairwise ~ group|emotion)
+  tabella_emotiongroup_Jefee <- data.frame(as.data.frame(summary(emotiongroup)$contrasts))
+  
+  contrastsJEFEE <- rbind(tabella_emotion%>%
+                            mutate(video_set = "JeFEE",emotion = NA, effect = "emotion"),
+                          tabella_emotiongroup_Jefee%>%mutate(video_set = "JeFEE", effect = "emotion|group"))%>%
+    select(effect,video_set, emotion, contrast, estimate, SE, df, z.ratio, p.value)%>%
     mutate_if(is.numeric,~round(., digits = 4)) %>%
-    kbl(caption = "Contrasts (no corrected)") %>%
-    column_spec(9, color = ifelse(contrasts$p.value <= 0.05, "red", "black")) %>%
-    kable_classic(full_width = F, html_font = "Cambria")
+    flextable() %>% 
+    colformat_double(digits = 2) %>% 
+    autofit()%>%
+    fontsize( size = 8)%>% 
+    theme_vanilla() %>% 
+    align(align = "center")%>%
+    width(j = 1:8, width = .7) 
+  
+  
+  ADFES_chiquadro <- car::Anova(fit_ADFES, type = 3) 
+  ADFES_table<- ADFES_chiquadro %>%
+    tibble::rownames_to_column("Effect") %>%
+    dplyr::select(Effect, everything()) %>%
+    flextable() %>% 
+    colformat_double(digits = 2) %>% 
+    autofit()
 
   
-  # Generate model plot
+  emotion<-emmeans(fit_ADFES, pairwise ~ emotion)
+  tabella_emotion <- data.frame(as.data.frame(summary(emotion)$contrasts))
+  
+  contrastsADFES <- rbind(tabella_emotion%>%mutate(video_set = "ADFES",emotion = NA, effect = "emotion"))%>%
+    select(effect,video_set, emotion, contrast, estimate, SE, df, z.ratio, p.value)%>%
+    mutate_if(is.numeric,~round(., digits = 4)) %>%
+    flextable() %>% 
+    colformat_double(digits = 2) %>% 
+    autofit()%>%
+    fontsize( size = 8)%>% 
+    theme_vanilla() %>% 
+    align(align = "center") %>%
+    width(j = 1:9, width = .7) 
   
   #explorative plots
   flex_emotion <- flexplot(correct~emotion | video_set*group, data= x)
@@ -192,13 +238,6 @@ table_accuracy <- accuracy %>%
          y = "Accuracy") +
     themeperso
   
-  plotemogroup <- ggpredict(fit, terms = c("emotion", "group")) %>%
-    plot() + 
-    labs(
-      title = "Interaction  group * emotion",
-      x = "Emotions",
-      y = "Accuracy") +
-    themeperso
   
   plotemovideo <- ggpredict(fit, terms = c( "emotion", "video_set"))%>%
     plot()+ 
@@ -216,18 +255,56 @@ table_accuracy <- accuracy %>%
   
 ploteffect<-cowplot::plot_grid(plotemotion,
           plotvideo,
-          plotemogroup,
           plotemovideo,
           plotint3,
-          ncol = 1,
-          scale = c(.9, .9, .9, .9,.9))
+          ncol = 2,
+          scale = c(.9, .9, .9,.9))
   
   
   
 
 # Save the results
-  save(fit, table, chi_table,LRT_table, contrast, ploteffect,table_accuracy, plot_freq_gw1, plot_freq_gw2,  file = file.path("models","accuracy.RData"))
+  save(fit, table, chi_table, contrast,JeFEE_table,contrastsJEFEE,ADFES_table,contrastsADFES, ploteffect,table_accuracy, plot_freq_gw1, plot_freq_gw2,plotint3,  file = file.path("models","accuracy.RData"))
+  load(file.path("models","accuracy.RData"))
   
+
+  
+  # Creating a Word document with the table
+  library(officer)
+  doc <- officer::read_docx()
+  doc <- body_add_flextable(doc, value = table_accuracy)
+  doc <- body_add_par(doc, value ="", style ="Normal")
+  
+  doc <- body_add_gg(doc, value = plotint3, style = "centered")
+  doc <- body_add_par(doc, value ="", style ="Normal")
+  
+  doc <- body_add_break(doc)
+  doc <- body_add_par(doc, value ="Full vars", style ="Titolo 1")
+  doc <- body_add_flextable(doc, value = chi_table)
+  doc <- body_add_par(doc, value ="", style ="Normal")
+  
+  doc <- body_add_flextable(doc, value = contrast)
+  doc <- body_add_par(doc, value ="", style ="Normal")
+  
+  doc <- body_add_break(doc)
+  doc <- body_add_par(doc, value ="JeFEE sub_dataset", style ="Normal")
+  doc <- body_add_flextable(doc, value = JeFEE_table)
+  doc <- body_add_par(doc, value ="", style ="Normal")
+  
+  doc <- body_add_flextable(doc, value = contrastsJEFEE)
+  doc <- body_add_par(doc, value ="", style ="Normal")
+  
+  doc <- body_add_break(doc)
+  doc <- body_add_par(doc, value ="ADFES sub_dataset", style ="Normal")
+  doc <- body_add_flextable(doc, value = ADFES_table)
+  doc <- body_add_par(doc, value ="", style ="Normal")
+  
+  doc <- body_add_par(doc, value ="", style ="Normal")
+  doc <- body_add_flextable(doc, value = contrastsADFES)
+  
+  # file_path <- "objects/summary_accuracy.docx"
+  print(doc, target = file_path)
+
 #################################################
 # 
 # END

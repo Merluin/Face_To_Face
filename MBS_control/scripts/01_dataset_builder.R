@@ -14,12 +14,16 @@ rm(list=ls()) # remove all objects
 # Load custom functions using devtools package
 devtools::load_all()
 
+#replace_csv("group","moebius")
 # Concatenate all files from Psychopy
-# Files are .csv placed in the "original_data" folder
+# Load and process datasets 
 dataset <- list.files(path = "original_data", full.names = TRUE, pattern = 'csv') %>%
   lapply(., function(x) read.csv(x, sep = ",", header = TRUE, stringsAsFactors = FALSE)) %>%
   lapply(clean_practice) %>%
-  bind_rows()
+  bind_rows() # check and replace [] in csv file
+
+unique(dataset$participant)
+
 
 # Modify the dataset by adding subject and trial information
 dataset <- dataset %>%

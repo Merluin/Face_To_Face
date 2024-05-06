@@ -239,11 +239,14 @@ plot_gew_legend_neutral <- cowplot::plot_grid(neutral_plot, gew_legend, labels =
 # Responses Plots Gw1 & Gw2 ---------------------------------------------------------------
 
 plot_gew_emotions_gw1 <- dataset_full %>% 
-  filter(Video.emotion != "neutrality", Wheel.task == "task", Wheel.name == "GW1") %>% 
+  #filter(Video.emotion != "neutrality", Wheel.task == "task", Wheel.name == "GW1") %>% 
+  filter(Video.emotion == "fear", Wheel.task == "task", Wheel.name == "GW1") %>% 
   ggplot(aes(x = Wheel.x, y = Wheel.y, shape = Pt.group, color = Pt.group)) +
   ggpubr::background_image(bg) +
   geom_point(alpha = 0.5, size = 1) +
-  ggh4x::facet_nested(  Video.emotion + Video.set  ~  Pt.match) +
+  #ggh4x::facet_nested(  Video.emotion + Video.set  ~  Pt.match) +
+  #ggh4x::facet_nested(Video.set ~ Video.emotion) +
+  ggh4x::facet_nested(. ~ Video.set) +
   coord_fixed(xlim = c(-300, 300), ylim = c(-300, 300)) +
   theme_minimal() +
   theme(axis.text.x = element_blank(),

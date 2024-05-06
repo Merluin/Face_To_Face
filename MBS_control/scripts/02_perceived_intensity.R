@@ -27,6 +27,8 @@ intensity_mean <-  dataset_gw1 %>%
   dplyr::select(Pt.code,  Video.set, Video.emotion, Pt.group, Resp.intensity, Resp.correct) %>%
   'colnames<-'(c("subject" ,"video_set", "emotion", "group", "intensity","correct"))
 
+unique(intensity_mean$subject)
+
 # Calculate intensity mean for neutral dataset
 dat_neutral <- dataset_neutral %>%
   dplyr::select(Pt.code,  Video.set, Video.emotion, Pt.group, Resp.intensity) %>%
@@ -59,13 +61,51 @@ plot_emotion<- flexplot(intensity~emotion+group |  video_set,
 # Fit linear mixed-effects model
 fit <- lmer(intensity ~ emotion * group * video_set + (1|subject),
             data = intensity_mean%>%filter(correct == 1))
+
+fit0 <- lmer(intensity ~ group   + (1|subject) , data = intensity_mean%>%filter(correct == 1))
+fit1 <- lmer(intensity ~ emotion + group + (1|subject) , data = intensity_mean%>%filter(correct == 1))
+fit2 <- lmer(intensity ~ emotion + group + video_set + (1|subject) , data = intensity_mean%>%filter(correct == 1))
+fit3 <- lmer(intensity ~ emotion * group + (1|subject) , data = intensity_mean%>%filter(correct == 1))
+fit4 <- lmer(intensity ~ emotion * group * video_set + (1|subject) , data = intensity_mean%>%filter(correct == 1))
+anova(fit0,fit1,fit2,fit3,fit4)
   
   # Generate table summary
   table <- tab_model(fit) #, show.df = FALSE, string.p = "p adjusted", p.adjust = "bonferroni")
   visualize(fit, plot = "residuals")
   # Create ANOVA table
   # Perform ANOVA
+  fit <- fit4
   chiquadro <- car::Anova(fit, test.statistic= "Chisq", type = "3") # test.statistic=c("Chisq", "F")
+  plot(allEffects(fit))
+  
+  JeFEEdata <- intensity_mean%>%filter(correct == 1) %>% filter(video_set == "JeFEE")
+  ADFESdata <- intensity_mean%>%filter(correct == 1) %>% filter(video_set == "ADFES")
+  fit_JeFEE <- lmer(intensity ~ emotion * group  + (1|subject) , data = JeFEEdata)
+  fit_ADFES <- lmer(intensity ~ emotion * group  + (1|subject) , data = ADFESdata)
+  
+  JeFEE_chiquadro <- car::Anova(fit_JeFEE, type = 3) 
+  
+  JeFEE_table<- JeFEE_chiquadro %>%
+    kbl(caption = "JeFEE: intyensity ~ emotion * group , p-values via partial sums of squares, Accuracy n=20") %>%
+    column_spec(4, color = ifelse(JeFEE_chiquadro$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
+    kable_classic(full_width = F, html_font = "Cambria")
+  
+  ADFES_chiquadro <- car::Anova(fit_ADFES, type = 3) 
+
+  ADFES_table<- ADFES_chiquadro %>%
+    kbl(caption = "ADFES: inytensity ~ emotion * group , p-values via partial sums of squares, Accuracy n=20") %>%
+    column_spec(4, color = ifelse(ADFES_chiquadro$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
+    kable_classic(full_width = F, html_font = "Cambria")
+  
+  emotion<-emmeans(fit_ADFES, pairwise ~ emotion)
+  tabella_emotion <- data.frame(as.data.frame(summary(emotion)$contrasts))
+  
+  contrastsADFES <- rbind(tabella_emotion%>%mutate(video_set = "ADFES",emotion = NA, effect = "emotion"))%>%
+    select(effect,video_set, emotion, contrast, estimate, SE, df, t.ratio, p.value)%>%
+    mutate_if(is.numeric,~round(., digits = 4)) %>%
+    kbl(caption = "Contrasts (no corrected)") %>%
+    column_spec(9, color = ifelse(tabella_emotion$p.value <= 0.05, "red", "black")) %>%
+    kable_classic(full_width = F, html_font = "Cambria")
   
   chi_table <- chiquadro %>%
     drop_na(`Pr(>Chisq)`) %>%
@@ -124,7 +164,8 @@ fit <- lmer(intensity ~ emotion * group * video_set + (1|subject),
   
 
 # Save the results
-save(fit, table, chi_table, contrast, ploteffect,table_intensity, plot_emotion,  file = file.path("models/perceived_intensity.RData"))
+save(fit, table, chi_table, contrast,JeFEE_table,ADFES_table,contrastsADFES,  ploteffect,table_intensity, plot_emotion,plotvideoemotion,  file = file.path("models/perceived_intensity.RData"))
+load(file.path("models","perceived_intensity.RData"))
 
 #################################################
 # 
