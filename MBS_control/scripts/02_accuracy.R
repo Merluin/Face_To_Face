@@ -16,8 +16,10 @@
 rm(list=ls()) # remove all objects
 
 # Functions & libraries---------------------------------------------------------------
+#replace_csv("group", "control")
 
 devtools::load_all()
+
 
 # Data --------------------------------------------------------------------
 load(file.path("objects","mbs_circular.RData"))
@@ -90,10 +92,10 @@ table_accuracy <- accuracy %>%
   #        emotion == "anger")
 
   fit0 <- glmer(correct ~ group   + (1|subject) , data = x, family = binomial)
-  fit1 <- glmer(correct ~ emotion + group + (1|subject) , data = x, family = binomial)
-  fit2 <- glmer(correct ~ emotion + group + video_set + (1|subject) , data = x, family = binomial)
-  fit3 <- glmer(correct ~ emotion * group + (1|subject) , data = x, family = binomial)
-  fit4 <- glmer(correct ~ emotion * group * video_set + (1|subject) , data = x, family = binomial)
+  fit1 <- glmer(correct ~ group + emotion + (1|subject) , data = x, family = binomial)
+  fit2 <- glmer(correct ~ group + emotion + video_set + (1|subject) , data = x, family = binomial)
+  fit3 <- glmer(correct ~ group * emotion + (1|subject) , data = x, family = binomial)
+  fit4 <- glmer(correct ~ group * emotion * video_set + (1|subject) , data = x, family = binomial)
 anova(fit0,fit1,fit2,fit3,fit4)
 fit <- fit4
   # Generate table summary
@@ -136,12 +138,22 @@ fit <- fit4
   emotion_group_video_set<-emmeans(fit, pairwise ~ group|emotion|video_set)
   tabella_emotion_group_video_set <- data.frame(as.data.frame(summary(emotion_group_video_set)$contrasts))
   
+  video_set_emotion_group<-emmeans(fit, pairwise ~ video_set|emotion|group)
+  tabella_video_set_emotion_group <- data.frame(as.data.frame(summary(video_set_emotion_group)$contrasts))
   
   
-  contrasts <- rbind(tabella_emotion%>%mutate(video_set = "all",emotion = NA, effect = "emotion"),
-                     tabella_video_set%>%mutate(video_set = NA,emotion = "all", effect = "video_set"),
-                     tabella_emotion_video_set%>%mutate(video_set = NA, effect = "emotion|video_set"),
-                     tabella_emotion_group_video_set%>%mutate(effect = "group|emotion|video_set"))%>%
+  
+  
+  contrasts <- rbind(tabella_emotion%>%mutate(video_set = "all",emotion = "", effect = "emotion")%>%
+                       select(contrast, estimate, SE, df, z.ratio, p.value, video_set, emotion, effect),
+                     tabella_video_set%>%mutate(video_set = "",emotion = "all", effect = "video_set")%>%
+                       select(contrast, estimate, SE, df, z.ratio, p.value, video_set, emotion, effect),
+                     tabella_emotion_video_set%>%mutate(video_set = "", effect = "emotion|video_set")%>%
+                       select(contrast, estimate, SE, df, z.ratio, p.value, video_set, emotion, effect),
+                     tabella_emotion_group_video_set%>%mutate(effect = "group|emotion|video_set")%>%
+                       select(contrast, estimate, SE, df, z.ratio, p.value, video_set, emotion, effect),
+                     tabella_video_set_emotion_group%>%mutate(video_set = "",effect = "video_sete|motion|group")%>%
+                       select(contrast, estimate, SE, df, z.ratio, p.value, video_set, emotion, effect)) %>%
     select(effect,video_set, emotion, contrast, estimate, SE, df, z.ratio, p.value)
   
   
@@ -175,12 +187,8 @@ fit <- fit4
   emotion<-emmeans(fit_JeFEE, pairwise ~ emotion)
   tabella_emotion <- data.frame(as.data.frame(summary(emotion)$contrasts))
   
-  emotiongroup<-emmeans(fit_JeFEE, pairwise ~ group|emotion)
-  tabella_emotiongroup_Jefee <- data.frame(as.data.frame(summary(emotiongroup)$contrasts))
-  
   contrastsJEFEE <- rbind(tabella_emotion%>%
-                            mutate(video_set = "JeFEE",emotion = NA, effect = "emotion"),
-                          tabella_emotiongroup_Jefee%>%mutate(video_set = "JeFEE", effect = "emotion|group"))%>%
+                            mutate(video_set = "JeFEE",emotion = NA, effect = "emotion"))%>%
     select(effect,video_set, emotion, contrast, estimate, SE, df, z.ratio, p.value)%>%
     mutate_if(is.numeric,~round(., digits = 4)) %>%
     flextable() %>% 
@@ -203,6 +211,7 @@ fit <- fit4
   
   emotion<-emmeans(fit_ADFES, pairwise ~ emotion)
   tabella_emotion <- data.frame(as.data.frame(summary(emotion)$contrasts))
+
   
   contrastsADFES <- rbind(tabella_emotion%>%mutate(video_set = "ADFES",emotion = NA, effect = "emotion"))%>%
     select(effect,video_set, emotion, contrast, estimate, SE, df, z.ratio, p.value)%>%
@@ -279,7 +288,7 @@ ploteffect<-cowplot::plot_grid(plotemotion,
   doc <- body_add_par(doc, value ="", style ="Normal")
   
   doc <- body_add_break(doc)
-  doc <- body_add_par(doc, value ="Full vars", style ="Titolo 1")
+  doc <- body_add_par(doc, value ="Full vars", style ="Normal")
   doc <- body_add_flextable(doc, value = chi_table)
   doc <- body_add_par(doc, value ="", style ="Normal")
   
@@ -302,7 +311,7 @@ ploteffect<-cowplot::plot_grid(plotemotion,
   doc <- body_add_par(doc, value ="", style ="Normal")
   doc <- body_add_flextable(doc, value = contrastsADFES)
   
-  # file_path <- "objects/summary_accuracy.docx"
+   file_path <- "objects/summary_accuracy.docx"
   print(doc, target = file_path)
 
 #################################################

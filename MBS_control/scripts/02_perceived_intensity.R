@@ -78,6 +78,56 @@ anova(fit0,fit1,fit2,fit3,fit4)
   chiquadro <- car::Anova(fit, test.statistic= "Chisq", type = "3") # test.statistic=c("Chisq", "F")
   plot(allEffects(fit))
   
+  chi_table <- chiquadro %>%
+    drop_na(`Pr(>Chisq)`) %>%
+    mutate(`Pr(>Chisq)` = round(`Pr(>Chisq)`, 3)) %>%
+    kbl(caption = "Anova(model, type = 3)") %>%
+    column_spec(4, color = ifelse(chiquadro$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
+    kable_classic(full_width = F, html_font = "Cambria")
+  # Convert the HTML output of kable to flextable
+  chi_table <- chiquadro %>%
+    tibble::rownames_to_column("Effect") %>%
+    dplyr::select(Effect, everything()) %>%
+    flextable() %>% 
+    colformat_double(digits = 2) %>% 
+    autofit()%>% 
+    theme_vanilla() %>% 
+    align(align = "center")
+  
+
+  #Contrasts
+  emotion<-emmeans(fit, pairwise ~ emotion)
+  tabella_emotion <- data.frame(as.data.frame(summary(emotion)$contrasts))
+  
+  video_set<-emmeans(fit, pairwise ~ video_set)
+  tabella_video_set <- data.frame(as.data.frame(summary(video_set)$contrasts))
+  
+  emotion_video_set<-emmeans(fit, pairwise ~ video_set|emotion)
+  tabella_emotion_video_set <- data.frame(as.data.frame(summary(emotion_video_set)$contrasts))
+  
+  
+  
+  contrasts <- rbind(tabella_emotion%>%mutate(video_set = "all",emotion = "", effect = "emotion")%>%
+                       select(contrast, estimate, SE, df, t.ratio, p.value, video_set, emotion, effect),
+                     tabella_video_set%>%mutate(video_set = "",emotion = "all", effect = "video_set")%>%
+                       select(contrast, estimate, SE, df, t.ratio, p.value, video_set, emotion, effect),
+                     tabella_emotion_video_set%>%mutate(video_set = "", effect = "emotion|video_set")%>%
+                       select(contrast, estimate, SE, df, t.ratio, p.value, video_set, emotion, effect)) %>%
+    select(effect,video_set, emotion, contrast, estimate, SE, df, t.ratio, p.value)
+  
+  
+  contrast<-contrasts%>%
+    flextable() %>% 
+    colformat_double(digits = 2) %>% 
+    autofit() %>%
+    fontsize( size = 8)%>% 
+    theme_vanilla() %>% 
+    align(align = "center")%>%
+    width(j = 1:9, width = .7) 
+  
+  
+  
+  
   JeFEEdata <- intensity_mean%>%filter(correct == 1) %>% filter(video_set == "JeFEE")
   ADFESdata <- intensity_mean%>%filter(correct == 1) %>% filter(video_set == "ADFES")
   fit_JeFEE <- lmer(intensity ~ emotion * group  + (1|subject) , data = JeFEEdata)
@@ -86,16 +136,23 @@ anova(fit0,fit1,fit2,fit3,fit4)
   JeFEE_chiquadro <- car::Anova(fit_JeFEE, type = 3) 
   
   JeFEE_table<- JeFEE_chiquadro %>%
-    kbl(caption = "JeFEE: intyensity ~ emotion * group , p-values via partial sums of squares, Accuracy n=20") %>%
-    column_spec(4, color = ifelse(JeFEE_chiquadro$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
-    kable_classic(full_width = F, html_font = "Cambria")
+    tibble::rownames_to_column("Effect") %>%
+    dplyr::select(Effect, everything()) %>%
+    flextable() %>% 
+    colformat_double(digits = 2) %>% 
+    autofit()%>%
+    fontsize( size = 10)%>% 
+    theme_vanilla() %>% 
+    align(align = "center")
   
   ADFES_chiquadro <- car::Anova(fit_ADFES, type = 3) 
-
+  
   ADFES_table<- ADFES_chiquadro %>%
-    kbl(caption = "ADFES: inytensity ~ emotion * group , p-values via partial sums of squares, Accuracy n=20") %>%
-    column_spec(4, color = ifelse(ADFES_chiquadro$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
-    kable_classic(full_width = F, html_font = "Cambria")
+    tibble::rownames_to_column("Effect") %>%
+    dplyr::select(Effect, everything()) %>%
+    flextable() %>% 
+    colformat_double(digits = 2) %>% 
+    autofit()
   
   emotion<-emmeans(fit_ADFES, pairwise ~ emotion)
   tabella_emotion <- data.frame(as.data.frame(summary(emotion)$contrasts))
@@ -103,34 +160,13 @@ anova(fit0,fit1,fit2,fit3,fit4)
   contrastsADFES <- rbind(tabella_emotion%>%mutate(video_set = "ADFES",emotion = NA, effect = "emotion"))%>%
     select(effect,video_set, emotion, contrast, estimate, SE, df, t.ratio, p.value)%>%
     mutate_if(is.numeric,~round(., digits = 4)) %>%
-    kbl(caption = "Contrasts (no corrected)") %>%
-    column_spec(9, color = ifelse(tabella_emotion$p.value <= 0.05, "red", "black")) %>%
-    kable_classic(full_width = F, html_font = "Cambria")
-  
-  chi_table <- chiquadro %>%
-    drop_na(`Pr(>Chisq)`) %>%
-    mutate(`Pr(>Chisq)` = round(`Pr(>Chisq)`, 3)) %>%
-    kbl(caption = "Anova(model, type = 3)") %>%
-    column_spec(4, color = ifelse(chiquadro$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
-    kable_classic(full_width = F, html_font = "Cambria")
-  
-  #Contrasts
-  emotion <- testInteractions(fit, pairwise = "emotion", adjustment = "fdr")
-  video<- testInteractions(fit, pairwise = "video_set", adjustment = "fdr")
-  emotionvideo<- testInteractions(fit, pairwise = "video_set", fixed = "emotion", adjustment = "fdr")
-  
-    # data table of contrast
-  temp<-rbind(emotion,
-              video,
-              emotionvideo)
-  
-  # kable table object
-  contrast<-temp%>%
-    drop_na(`Pr(>Chisq)`) %>%
-    mutate(`Pr(>Chisq)` = round(`Pr(>Chisq)`, 3)) %>%
-    kbl(caption = "Contrasts (FDR corrected)") %>%
-    column_spec(5, color = ifelse(temp$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
-    kable_classic(full_width = F, html_font = "Cambria")
+    flextable() %>% 
+    colformat_double(digits = 2) %>% 
+    autofit()%>%
+    fontsize( size = 8)%>% 
+    theme_vanilla() %>% 
+    align(align = "center") %>%
+    width(j = 1:9, width = .7) 
   
   # Generate plot
   themeperso <- theme_paper(font_size = 10) +
@@ -164,8 +200,42 @@ anova(fit0,fit1,fit2,fit3,fit4)
   
 
 # Save the results
-save(fit, table, chi_table, contrast,JeFEE_table,ADFES_table,contrastsADFES,  ploteffect,table_intensity, plot_emotion,plotvideoemotion,  file = file.path("models/perceived_intensity.RData"))
+save(table_intensity, table, chi_table, contrast,JeFEE_table,ADFES_table,contrastsADFES,  ploteffect,table_intensity, plot_emotion,plotvideoemotion,  file = file.path("models/perceived_intensity.RData"))
 load(file.path("models","perceived_intensity.RData"))
+
+
+# Creating a Word document with the table
+library(officer)
+doc <- officer::read_docx()
+doc <- body_add_flextable(doc, value = table_intensity)
+doc <- body_add_par(doc, value ="", style ="Normal")
+
+doc <- body_add_gg(doc, value = plot_emotion, style = "centered")
+doc <- body_add_par(doc, value ="", style ="Normal")
+
+doc <- body_add_break(doc)
+doc <- body_add_par(doc, value ="Full vars", style ="Normal")
+doc <- body_add_flextable(doc, value = chi_table)
+doc <- body_add_par(doc, value ="", style ="Normal")
+
+doc <- body_add_flextable(doc, value = contrast)
+doc <- body_add_par(doc, value ="", style ="Normal")
+
+doc <- body_add_break(doc)
+doc <- body_add_par(doc, value ="JeFEE sub_dataset", style ="Normal")
+doc <- body_add_flextable(doc, value = JeFEE_table)
+doc <- body_add_par(doc, value ="", style ="Normal")
+
+doc <- body_add_break(doc)
+doc <- body_add_par(doc, value ="ADFES sub_dataset", style ="Normal")
+doc <- body_add_flextable(doc, value = ADFES_table)
+doc <- body_add_par(doc, value ="", style ="Normal")
+
+doc <- body_add_par(doc, value ="", style ="Normal")
+doc <- body_add_flextable(doc, value = contrastsADFES)
+
+file_path <- "objects/summary_intensity.docx"
+print(doc, target = file_path)
 
 #################################################
 # 
