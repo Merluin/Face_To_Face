@@ -34,6 +34,16 @@ accuracy<-correct_data%>%
   summarise(correct = sum(correct),
             acc = correct/8) # 8 = 4 video id * 2 blocks
 
+correct_data_neu <-  dataset_neutral %>%
+  dplyr::select(Pt.code, Pt.match, Video.set, Video.emotion, Pt.group, Resp.correct) %>%
+  'colnames<-'(c("subject" ,"match","video_set", "emotion", "group", "correct"))
+
+accuracy_neu<-correct_data_neu%>%
+  group_by(subject,match,group, emotion, video_set) %>%
+  summarise(correct = sum(correct),
+            acc = correct/8) # 8 = 4 video id * 2 blocks
+
+write.xlsx(accuracy, "objects/summary_subjects.xlsx")
 
 
 # Plot accuracy GWE 1 vs GWE 2 ----------------------------------------------
@@ -45,6 +55,26 @@ dat_summ <- dataset_full %>%
   summarise(n = sum(count))%>%
   group_by(Video.emotion,Video.set,Wheel.name, Resp.category,Pt.group) %>%
   summarise(n = mean(n))
+
+plot_freq_gw1 <- accuracy %>% 
+  mutate(video_set = stringr::str_to_title(video_set))%>%
+  ggplot(aes(x = emotion, y = acc, fill = group)) +
+  geom_col(position = position_dodge()) +
+  facet_grid(emotion~video_set) +
+  cowplot::theme_minimal_hgrid() +
+  theme_paper(font_size = 10) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1,
+                                   face = ifelse(levels(dataset_full$Resp.category) %in% unique(dat_summ$Video.emotion),
+                                                 "bold", "plain"),
+                                   size = ifelse(levels(dataset_full$Resp.category) %in% unique(dat_summ$Video.emotion),
+                                                 10, 8)),
+        axis.text.y = element_text(size = 8),
+        axis.title.x = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position = "bottom",
+        strip.text = element_text(face = "bold", size = 10),
+        panel.grid.major.x = element_blank()) +
+  labs(fill = "group")
 
 plot_freq_gw1 <- dat_summ %>% 
   filter(Wheel.name == "GW1" )%>%

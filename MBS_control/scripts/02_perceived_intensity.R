@@ -32,7 +32,14 @@ unique(intensity_mean$subject)
 # Calculate intensity mean for neutral dataset
 dat_neutral <- dataset_neutral %>%
   dplyr::select(Pt.code,  Video.set, Video.emotion, Pt.group, Resp.intensity) %>%
-  'colnames<-'(c("subject" ,"video_set", "emotion", "group", "intensity"))
+  'colnames<-'(c("subject" ,"video_set", "emotion", "group", "intensity")) %>%
+  mutate(correct = 1)
+
+data <- rbind(intensity_mean, dat_neutral) %>%
+  group_by(subject,video_set, emotion ,group ) %>%
+  summarise(mean = mean(intensity,na.rm=TRUE))
+write.xlsx(data, "objects/summary_intensity_subjects.xlsx")
+
 
 # Generate a table summarizing the intensities
 table_intensity <- intensity_mean%>%
