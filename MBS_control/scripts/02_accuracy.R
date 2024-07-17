@@ -45,6 +45,12 @@ accuracy_neu<-correct_data_neu%>%
 
 write.xlsx(accuracy, "objects/summary_subjects.xlsx")
 
+data <- accuracy%>%
+  group_by( video_set,subject) %>%
+  summarise(mean = mean(acc,na.rm=TRUE))
+
+write.xlsx(data, "objects/summary_accuracy_subjects.xlsx")
+
 
 # Plot accuracy GWE 1 vs GWE 2 ----------------------------------------------
 dat_summ <- dataset_full %>%
