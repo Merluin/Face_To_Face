@@ -30,7 +30,7 @@ load(file.path("objects","palsy_circular.RData"))
 # 8ij7agah max 56 trials subject 8 match 34
 
 dataset_gw1%>%
-  filter(Pt.code == "8ij7agah" | Pt.code == "e2wtlj1f")%>%
+  #filter(Pt.code == "8ij7agah" | Pt.code == "e2wtlj1f")%>%
   group_by(Pt.code)%>%
   mutate( max.trial = max(Exp.trial))%>%
   filter(Exp.trial == 2)%>%
@@ -64,30 +64,27 @@ demogaphic_summary <- demogaphic%>%
   dplyr::select(Group,Subject,Gender,Age,Education)%>%
   group_by(Group,Gender) %>% 
   summarise(n = n(),
-            Age_mean = mean(Age),
-            Age_Sd = sd(Age),
-            Education_mean = mean(Education),
-            Education_Sd = sd(Education))
+            Age_mean = mean(Age,na.rm = TRUE),
+            Age_Sd = sd(Age,na.rm = TRUE),
+            Education_mean = mean(Education,na.rm = TRUE),
+            Education_Sd = sd(Education,na.rm = TRUE))
 
 # add total
 demogaphic_tbl_summary <- rbind(demogaphic_summary[1:2,], 
                                 data.frame(Group = "control", Gender ='Sub-total',t(colSums(demogaphic_summary[1:2,3])), t(colMeans(demogaphic_summary[1:2, -c(1,2,3)]))),
                                 demogaphic_summary[3:4,], 
-                                data.frame(Group = "moebius", Gender ='Sub-total',t(colSums(demogaphic_summary[3:4,3])), t(colMeans(demogaphic_summary[3:4, -c(1,2,3)]))),
+                                data.frame(Group = "palsy", Gender ='Sub-total',t(colSums(demogaphic_summary[3:4,3])), t(colMeans(demogaphic_summary[3:4, -c(1,2,3)]))),
                                 data.frame(Group = NA, Gender ='Total',t(colSums(demogaphic_summary[,3])), t(colMeans(demogaphic_summary[, -c(1,2,3)]))))%>% 
-  'colnames<-'(c("Group","Gender","n","Mean", "Sd","Mean ","Sd " ))%>%
+  mutate(Age = paste0(round(Age_mean,2), " ± ",round(Age_Sd,2)),
+         Education = paste0(round(Education_mean,2), " ± ",round(Education_Sd,2)))%>%
+  select(Group, Gender, n, Age, Education)%>%
   flextable() %>% 
   autofit() %>% 
   theme_vanilla() %>% 
   fontsize(part = "all", size = 9)%>% 
   merge_v(j = 1)%>%
-  align( part = "header", align = "left") %>% 
+  align( part = "header", align = "center") %>% 
   align( part = "body", align = "center")%>%
-  colformat_double(j = 4:7, digits = 2) %>% 
-  align(part = "header", align = "center") %>% 
-  align( part = "body", align = "center")%>%
-  add_header_row(colwidths = c(3, 2, 2),
-                 values = c("", "Age","Education") )%>%
   bold(i = c(3,6,7), bold = TRUE)
 
 # Participants Responses Table---------------------------------------------------------------
@@ -254,7 +251,7 @@ plot_gew_emotions_gw1 <- dataset_full %>%
   ggplot(aes(x = Wheel.x, y = Wheel.y, shape = Pt.group, color = Pt.group)) +
   ggpubr::background_image(bg) +
   geom_point(alpha = 0.5, size = 1) +
-  ggh4x::facet_nested(  Video.emotion + Video.set  ~  Pt.match) +
+  ggh4x::facet_nested(   Video.set ~ Video.emotion) +
   coord_fixed(xlim = c(-300, 300), ylim = c(-300, 300)) +
   theme_minimal() +
   theme(axis.text.x = element_blank(),

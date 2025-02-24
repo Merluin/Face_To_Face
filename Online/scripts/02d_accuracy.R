@@ -75,117 +75,19 @@ table_accuracy <- accuracy %>%
 
 # Fit  correct for each emotion--------------------------------------------
 
-# Adatta il modello di regressione logistica
-x <- correct_data %>%
-  mutate(correct = as.factor(correct),
-         video_set = as.factor(video_set)) %>%
-  na.omit() 
+dataset_anova <- accuracy %>%
+  group_by(subject,video_set,emotion) %>%
+  summarise( acc = mean(acc, na.rm = TRUE))
 
+# Save dataset for Jamovi in CSV format
+write.csv(dataset_anova, "objects/dataset_anova_accuracy.csv", row.names = FALSE)
 
-fit <- glmer(correct ~ emotion  * video_set  + (1|subject) , data = x, family = binomial)
-fit0 <- glmer(correct ~ emotion  + (1|subject) , data = x, family = binomial)
-fit01 <- glmer(correct ~  video_set + (1|subject) , data = x, family = binomial)
-
-
-
-fit_mixed<- mixed(correct ~ emotion* video_set + (1|subject) ,method = "LRT", data = x, family = binomial, expand_re = TRUE)
-#fit_pb<- mixed(correct ~ emotion * group * video_set + (1|subject) ,method = "PB", data = x, family = binomial, expand_re = TRUE)
-
-# Generate table summary
-table <- tab_model(fit ) #, show.df = FALSE, string.p = "p adjusted", p.adjust = "bonferroni")
-
-# Create ANOVA table
 # Perform ANOVA
-chiquadro <- car::Anova(fit, type = 3) 
-# chiquadro <- anova(fit) # car::Anova
-# summary(chiquadro)$coefficients
-
-chi_table <- chiquadro %>%
-  kbl(caption = "correct ~ emotion * group * video_set, p-values via partial sums of squares, Accuracy n=20") %>%
-  column_spec(4, color = ifelse(chiquadro$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
-  kable_classic(full_width = F, html_font = "Cambria")
-
-LRT_table <- fit_mixed$anova_table %>%
-  kbl(caption = "correct ~ emotion * group * video_set, p-values via the likelihood ratio tests, Accuracy n=20") %>%
-  column_spec(5, color = ifelse(fit_mixed$anova_table$`Pr(>Chisq)` <= 0.05, "red", "black")) %>%
-  kable_classic(full_width = F, html_font = "Cambria")
-
-# interaction<- testInteractions(fit, pairwise = "group", fixed = c("video_set", "emotion"), adjustment = "fdr")
-# interaction2<- testInteractions(fit, pairwise = "group", fixed = c("video_set", "emotion"))
-
-
-#Contrasts
-emotion<-emmeans(fit_mixed, pairwise ~ emotion)
-tabella_emotion <- data.frame(as.data.frame(summary(emotion)$contrasts))
-
-video_set<-emmeans(fit_mixed, pairwise ~ video_set)
-tabella_video_set <- data.frame(as.data.frame(summary(video_set)$contrasts))
-
-
-emotion_video_set<-emmeans(fit_mixed, pairwise ~ video_set|emotion)
-tabella_emotion_video_set <- data.frame(as.data.frame(summary(emotion_video_set)$contrasts))
-
-
-contrasts <- rbind(tabella_emotion%>%mutate(emotion = NA, effect = "emotion"),
-                   tabella_video_set%>%mutate(emotion = "all", effect = "video_set"),
-                   tabella_emotion_video_set%>%mutate(effect = "emotion|video_set"))%>%
-  select(effect, emotion, contrast, estimate, SE, df, z.ratio, p.value)
-
-# kable table object
-options(knitr.kable.NA = '')
-contrast<-contrasts%>%
-  mutate_if(is.numeric,~round(., digits = 4)) %>%
-  kbl(caption = "Contrasts (no corrected)") %>%
-  column_spec(8, color = ifelse(contrasts$p.value <= 0.05, "red", "black")) %>%
-  kable_classic(full_width = F, html_font = "Cambria")
-
-
-# Generate model plot
-
-#explorative plots
-flex_emotion <- flexplot(correct~emotion | video_set, data= x)
-flex_video <- flexplot(correct~video_set, data= x)
-flex_plot <- cowplot::plot_grid(flex_emotion,flex_video,  nrow = 2)
-
-# plot
-themeperso <- theme_paper(font_size = 10) +
-  theme(legend.position = "bottom")
-
-plotemotion <- ggpredict(fit, terms = c( "emotion"))%>%
-  plot()+ 
-  labs(title = "Main effect emotion",
-       x = "Emotions",
-       y = "Accuracy") +
-  themeperso
-
-plotvideo <- ggpredict(fit, terms = c( "video_set"))%>%
-  plot()+ 
-  labs(title = "Main effect Video set",
-       x = "Emotions",
-       y = "Accuracy") +
-  themeperso
-
-
-plotemovideo <- ggpredict(fit, terms = c( "emotion", "video_set"))%>%
-  plot()+ 
-  labs(title = "Interaction video set * emotion",
-       x = "Emotions",
-       y = "Accuracy") +
-  themeperso
-
-
-
-ploteffect<-cowplot::plot_grid(plotemotion,
-                               plotvideo,
-                               plotemovideo,
-                               ncol = 1,
-                               scale = c(.9, .9, .9))
+full <- aov_ez("subject", "acc", dataset_anova,within = c("emotion", "video_set"))
 
 
 
 
-# Save the results
-save(fit, table, chi_table,LRT_table, contrast, ploteffect,table_accuracy, plot_freq_gw1, plot_freq_gw2,  file = file.path("models","accuracy.RData"))
 
 #################################################
 # 

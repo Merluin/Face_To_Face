@@ -66,8 +66,11 @@ plot_freq_gw2 <- dat_summ %>%
 
 table_accuracy <- accuracy %>% 
   group_by(group,emotion, video_set) %>% 
-  summarise(acc = mean(acc, na.rm = TRUE)) %>% 
-  pivot_wider(names_from = emotion, values_from = acc) %>% 
+  summarise(accu = paste0(
+    round(mean(acc, na.rm = TRUE),2),
+    " ± ",
+    round(sd(acc, na.rm = TRUE),2)))%>% 
+  pivot_wider(names_from = emotion, values_from = accu) %>% 
   flextable() %>% 
   colformat_double(digits = 2) %>% 
   autofit() %>% 
@@ -77,14 +80,34 @@ table_accuracy <- accuracy %>%
 
 # Fit  correct for each emotion--------------------------------------------
 
+dataset_anova<-correct_data %>%
+  group_by(subject,video_set,group,emotion) %>%
+  summarise( acc = mean(correct, na.rm = TRUE))
+
+# Perform ANOVA
+ADFES <- aov_ez("subject", "acc", dataset_anova%>%
+                  filter( video_set == "ADFES"),within = "emotion",  between = "group")
+
+JeFEE <- aov_ez("subject", "acc", dataset_anova%>%
+                  filter( video_set == "JeFEE"),within = "emotion",  between = "group")
+
+
+
+
+
+
+
+
+
 
   # Adatta il modello di regressione logistica
   dataset_glm<-correct_data%>%
+  filter( video_set == "ADFES") %>%# ADFES or JeFEE
     mutate(correct = as.factor(correct))%>%
     na.omit()
   
-  fit <- glmer(correct ~ emotion + group * video_set + (1|subject), data = dataset_glm, family = binomial)
-  fit_mixed<- mixed(correct ~ emotion * group * video_set + (1|subject) ,method = "LRT", data = dataset_glm, family = binomial, expand_re = TRUE)
+  fit <- glmer(correct ~  group  + (1|subject), data = dataset_glm, family = binomial)
+ # fit_mixed<- mixed(correct ~ emotion * group * video_set + (1|subject) ,method = "LRT", data = dataset_glm, family = binomial, expand_re = TRUE)
   
   # Generate table summary
   table <- tab_model(fit, show.df = FALSE) #, string.p = "p adjusted", p.adjust = "bonferroni")
@@ -205,3 +228,14 @@ table_accuracy <- accuracy %>%
   # END
   #
   ######################################## accuracy
+  
+  
+  
+  fit <- glmer(correct ~ emotion + group * video_set + (1|subject), data = dataset_glm, family = binomial)
+  fit_mixed<- mixed(correct ~ emotion * group * video_set + (1|subject) ,method = "LRT", data = dataset_glm, family = binomial, expand_re = TRUE)
+  
+  # Generate table summary
+  table <- tab_model(fit, show.df = FALSE) #, string.p = "p adjusted", p.adjust = "bonferroni")
+  
+  # Perform ANOVA
+  chiquadro <- car::Anova(fit, type = 3)

@@ -27,17 +27,23 @@ temp <- read.csv(file.path(folder_dir,filetask), sep=",", header=TRUE,stringsAsF
 # Create the "task" sub_dataset
 dataset<-temp%>%
   filter(Response == "click"| Zone.Type ==  "timelimit_screen")%>%
-  dplyr::select( "Local.Date", "Trial.Number","Participant.Public.ID" ,
+  dplyr::select( "Local.Date.and.Time", "Trial.Number","Participant.Public.ID" ,
                  "Screen.Name", "Reaction.Time", "X.Coordinate", "Y.Coordinate", "display", 
                  "Videos", "intensity", "file_gender", "emotion", "identity")%>%
   'colnames<-'(c("Exp.date", "Exp.trial", "Pt.code",  
                  "Wheel.name", "Resp.rt", "Wheel.x", "Wheel.y", "Wheel.task", 
-                 "Video.name", "Video.intensity", "Video.gender", "Video.emotion", "Video.id"))
+                 "Video.name", "Video.intensity", "Video.gender", "Video.emotion", "Video.id"))  %>%
+  filter(Pt.code != "2ap2peoy" )
+#pen6shs7 control no match
+# 62cwsg59 palsy no match
+
 
 # Load the Demographic Dataset from the Google Sheet
 demographic <- read.csv(file.path(folder_dir,filedemo), sep=";", header=TRUE,stringsAsFactors = FALSE,na.strings= "aa")
-  
-  
+
+unique(sort(unique(dataset$Pt.code)) == sort(unique(demographic$Pt.code)))
+#2cgl5059 637owdws
+
 # Combine the Psychopy and Demographic datasets using Pt.code as the key
 temp <- left_join(dataset, demographic, by = "Pt.code")
 

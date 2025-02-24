@@ -35,8 +35,11 @@ dat_neutral <- dataset_neutral %>%
 # Generate a table summarizing the intensities
 table_intensity <- intensity_mean%>%
   group_by(group,emotion, video_set) %>% 
-  summarise(intensity = mean(intensity, na.rm = TRUE)) %>% 
-  pivot_wider(names_from = emotion, values_from = intensity) %>% 
+  summarise(intensit = paste0(
+    round(mean(intensity, na.rm = TRUE),0),
+    " ± ",
+    round(sd(intensity, na.rm = TRUE),0)))%>% 
+  pivot_wider(names_from = emotion, values_from = intensit) %>% 
   flextable() %>% 
   colformat_double(digits = 2) %>% 
   autofit() %>% 
@@ -44,6 +47,52 @@ table_intensity <- intensity_mean%>%
   theme_vanilla() %>% 
   align(align = "center")
 
+
+# data set corr
+mean <-  dataset_gw1 %>%
+  dplyr::select(Pt.code,  Video.set, Video.emotion, Pt.group, Resp.intensity, Resp.correct, Asmt.sunnybrook) %>%
+  'colnames<-'(c("subject" ,"video_set", "emotion", "group", "intensity","correct", "sunny")) %>%
+  filter( group == "palsy") %>%
+  group_by(subject, video_set) %>%
+  summarise( int = mean(intensity, na.rm =TRUE),
+             acc = mean(correct, na.rm =TRUE),
+             sunny = mean(sunny, na.rm =TRUE))
+
+temp <- mean %>% filter(video_set == "ADFES")
+cor(temp$int ,temp$sunny) # cor una via + p-value
+
+temp <- mean %>% filter(video_set == "JeFEE")
+cor(temp$int ,temp$sunny) # cor una via + p-value
+
+temp <- mean %>% filter(video_set == "ADFES")
+cor(temp$acc ,temp$sunny)# cor una via + p-value
+cor_result <- cor.test(temp$acc, temp$sunny)
+
+temp <- mean %>% filter(video_set == "JeFEE")
+cor(temp$acc ,temp$sunny)# cor una via + p-value
+plot(temp$acc ,temp$sunny)
+
+# Caricare pacchetti necessari
+library(ggplot2)
+
+# Supponiamo che 'temp' sia il dataframe contenente 'acc' e 'sunny'
+# Creare il modello di regressione lineare
+model <- lm(acc ~ sunny, data = temp)
+
+# Ottenere il valore di p dalla regressione
+p_value <- summary(model)$coefficients[2,4]
+
+# Creare il plot con ggplot2
+ggplot(temp, aes(x = sunny, y = acc)) +
+  geom_point(color = "blue") +  # Scatter plot
+  geom_smooth(method = "lm", color = "red", se = TRUE) +  # Linea di regressione con intervallo di confidenza
+  annotate("text", x = min(temp$sunny), y = max(temp$acc), 
+           label = paste("p-value:", round(p_value, 4)), 
+           hjust = 0, size = 5, color = "black") +
+  labs(title = "Regressione lineare tra acc e sunny",
+       x = "sunny",
+       y = "acc") +
+  theme_minimal()
 
 # Generate aplot for emotions intensities
 plot_emotion<- flexplot(intensity~emotion+group |  video_set,
@@ -55,10 +104,28 @@ plot_emotion<- flexplot(intensity~emotion+group |  video_set,
   xlab("")
 
 # Fit  correct for each emotion--------------------------------------------
-  
+dataset_anova<-intensity_mean %>%
+  group_by(subject,video_set,group,emotion) %>%
+  summarise( intensity = mean(intensity, na.rm = TRUE))
+
+# Save dataset for Jamovi in CSV format
+write.csv(dataset_anova, "objects/dataset_anova_intensity.csv", row.names = FALSE)
+
+
+# Perform ANOVA
+ADFES <- aov_ez("subject", "intensity", dataset_anova%>%
+                  filter( video_set == "ADFES"),within = "emotion",  between = "group")
+
+JeFEE <- aov_ez("subject", "intensity", dataset_anova%>%
+                  filter( video_set == "JeFEE"),within = "emotion",  between = "group")
+
+emmeans( JeFEE, pairwise ~ group | emotion)
+
+
+
 # Fit linear mixed-effects model
-fit <- lmer(intensity ~ group * video_set + (1|subject),
-            data = intensity_mean%>%filter(correct == 1 , emotion == "anger"))
+fit <- lmer(intensity ~ emotion * group  + (1|subject),
+            data = intensity_mean%>%filter(video_set == "JeFEE"))
   
   # Generate table summary
   table <- tab_model(fit) #, show.df = FALSE, string.p = "p adjusted", p.adjust = "bonferroni")
