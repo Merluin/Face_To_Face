@@ -42,7 +42,7 @@ data<-dataset%>%
 
 id<-dataset%>%
   filter(Question.Key == "response-3")%>%
-  select(UTC.Date,Participant.Public.ID,Response)%>%
+  select(UTC.Date.and.Time,Participant.Public.ID,Response)%>%
 'colnames<-'(c("date" ,"id","subject"))
 
 
@@ -67,6 +67,20 @@ score <- left_join(scores,id, by = "id")%>%
   arrange(subject,id)%>%
   mutate(subject = num)%>%
   select(date,id,subject,group,acc)
+
+score <- score %>%
+  mutate(group = case_when( group == "cntr" ~ "control",
+                            group == "cntrl" ~ "control",
+                            group == "control" ~ "control",
+                            group == "ctrl" ~ "control",
+                            group == "ctrlmbs" ~ "control",
+                            group == "mbs" ~ "mbs",
+                            group == "mobius" ~ "mbs",
+                            group == "moebius" ~ "mbs" )) %>%
+drop_na("group")
+
+table(score)
+unique(dataset$Participant.Public.ID)
 
 
 data%>%
